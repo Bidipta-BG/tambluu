@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createTenant } from "@/lib/api";
-import type { Plan } from "@/lib/api";
+import { createTenant, getThemes } from "@/lib/api";
+import type { Plan, Theme } from "@/lib/api";
 
 interface FormFields {
   name: string;
@@ -11,6 +11,7 @@ interface FormFields {
   phone: string;
   websiteName: string;
   password: string;
+  themeId: string;
 }
 
 type FieldErrors = Partial<Record<keyof FormFields, string>>;
@@ -47,6 +48,10 @@ function validate(fields: FormFields): FieldErrors {
     errors.password = "Password must be at least 8 characters and contain letters, numbers, and special characters (e.g. @, #).";
   }
 
+  if (!fields.themeId) {
+    errors.themeId = "Please select a theme.";
+  }
+
   return errors;
 }
 
@@ -55,13 +60,20 @@ export default function RegisterForm() {
   const searchParams = useSearchParams();
   const planParam = searchParams.get("plan");
   const plan: Plan = planParam === "monthly" ? "monthly" : "yearly";
+  const initialThemeId = searchParams.get("theme") || "";
   
+  const [themes, setThemes] = useState<Theme[]>([]);
+  useEffect(() => {
+    getThemes().then(setThemes).catch(console.error);
+  }, []);
+
   const [fields, setFields] = useState<FormFields>({
     name: "",
     email: "",
     phone: "",
     websiteName: "",
     password: "",
+    themeId: initialThemeId,
   });
 
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -93,6 +105,7 @@ export default function RegisterForm() {
         desiredDomain: fields.websiteName.trim() + ".online",
         plan: plan,
         password: fields.password,
+        themeId: fields.themeId,
       });
 
       const query = new URLSearchParams(searchParams.toString());
@@ -168,6 +181,9 @@ export default function RegisterForm() {
           </div>
           {errors.websiteName && <p className="text-red-400 text-xs mt-1.5 font-medium">{errors.websiteName}</p>}
         </div>
+
+        {/* Theme selection UI removed as per request (theme is passed via URL) */}
+        {errors.themeId && <p className="text-red-400 text-sm mt-1.5 font-bold mb-4">{errors.themeId}</p>}
 
         <div>
           <label className="block text-white text-sm font-bold mb-2">Your require website password</label>

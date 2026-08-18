@@ -64,7 +64,13 @@ const FAQ_ITEMS = [
     id: "what-happens-next",
     question: "What happens next?",
     answer:
-      "Our team will register and configure your domain, set up your branded Tambola platform, and send you three WhatsApp links — one for Players, one for your Admin dashboard, and one for Agents. This typically takes less than 24 hours from the time of payment.",
+      "Your Tambola platform has been automatically created! You will receive your Admin and Player WhatsApp links shortly.",
+  },
+  {
+    id: "dns-instructions",
+    question: "How do I connect my domain?",
+    answer:
+      "To make your website live, log into your domain registrar (GoDaddy, Namecheap, etc.) and add an A Record pointing to the IP address 76.76.21.21. Your site will instantly go live once the DNS propagates.",
   },
   {
     id: "change-domain",

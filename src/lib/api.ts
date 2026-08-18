@@ -69,6 +69,8 @@ export interface CreateTenantInput {
   plan: Plan;
   /** Initial password for the tenant admin account. */
   password: string;
+  /** Selected theme ID. */
+  themeId?: string;
 }
 
 /** Server response after a tenant is successfully created. */
@@ -112,9 +114,28 @@ export interface CreateCheckoutSessionResponse {
   ownerPhone: string;
 }
 
+export interface Theme {
+  id: string;
+  name: string;
+  preview_image_url: string;
+  config: any;
+}
+
 // ---------------------------------------------------------------------------
 // API functions
 // ---------------------------------------------------------------------------
+
+export async function getThemes(): Promise<Theme[]> {
+  try {
+    const res = await apiFetch<{ data: Theme[] }>("/themes", {
+      next: { revalidate: 60 } // cache for 1 minute
+    });
+    return res.data || [];
+  } catch (error) {
+    console.error("Failed to fetch themes:", error);
+    return [];
+  }
+}
 
 /**
  * Create a new tenant (store) on the platform.
@@ -145,19 +166,36 @@ export interface CreateCheckoutSessionResponse {
 export async function createTenant(
   input: CreateTenantInput,
 ): Promise<CreateTenantResponse> {
-  // Mock response for UI testing until backend is connected
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        tenantId: "mock_tenant_" + Date.now(),
-        businessName: input.businessName,
-        ownerEmail: input.ownerEmail,
-        desiredDomain: input.desiredDomain,
-        plan: input.plan,
-        createdAt: new Date().toISOString(),
-      });
-    }, 1500);
+  const apiKey = process.env.NEXT_PUBLIC_INTERNAL_API_KEY;
+  if (!apiKey) {
+    throw new Error("NEXT_PUBLIC_INTERNAL_API_KEY is not configured");
+  }
+
+  const res = await apiFetch<{ data: any }>("/internal/tenants", {
+    method: "POST",
+    headers: {
+      "x-internal-key": apiKey,
+    },
+    body: JSON.stringify({
+      businessName: input.businessName,
+      domain: input.desiredDomain,
+      ownerName: input.ownerName,
+      ownerEmail: input.ownerEmail,
+      ownerPhone: input.ownerPhone,
+      ownerPassword: input.password,
+      plan: input.plan,
+      themeId: input.themeId,
+    }),
   });
+
+  return {
+    tenantId: res.data.tenant.id,
+    businessName: res.data.tenant.business_name,
+    ownerEmail: res.data.tenant.owner_email,
+    desiredDomain: res.data.tenant.domain,
+    plan: input.plan,
+    createdAt: res.data.tenant.created_at,
+  };
 }
 
 /**

@@ -7,11 +7,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import NavBar from "@/components/NavBar";
 
 const THEMES = [
-  { id: "festival-glow", name: "FESTIVAL GLOW", src: "/images/1festivalglow.png" },
-  { id: "northeast-essence", name: "NORTHEAST ESSENCE", src: "/images/2northeastessence.png" },
-  { id: "royal-tambola", name: "ROYAL TAMBOLA", src: "/images/3royaltambola.png" },
-  { id: "neon-night", name: "NEON NIGHT", src: "/images/4neonnight.png" },
-  { id: "color-splash", name: "COLOR SPLASH", src: "/images/5colorsplash.png" },
+  { id: "11111111-1111-1111-1111-111111111111", name: "FESTIVAL GLOW", src: "/images/1festivalglow.png" },
+  { id: "22222222-2222-2222-2222-222222222222", name: "NORTHEAST ESSENCE", src: "/images/2northeastessence.png" },
+  { id: "33333333-3333-3333-3333-333333333333", name: "ROYAL TAMBOLA", src: "/images/3royaltambola.png" },
+  { id: "44444444-4444-4444-4444-444444444444", name: "NEON NIGHT", src: "/images/4neonnight.png" },
+  { id: "55555555-5555-5555-5555-555555555555", name: "COLOR SPLASH", src: "/images/5colorsplash.png" },
 ];
 
 function ThemesContent() {
