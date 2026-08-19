@@ -40,9 +40,11 @@ export default function CheckoutView({ tenantId }: { tenantId: string }) {
   const router = useRouter();
   const [processingPlan, setProcessingPlan] = useState<Plan | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleSelectPlan = useCallback(
     async (plan: Plan) => {
+      setShowSuccess(true);
       // Razorpay integration temporarily disabled for testing phase as requested.
       // Later on, uncomment the logic below to integrate Razorpay.
       
@@ -105,6 +107,27 @@ export default function CheckoutView({ tenantId }: { tenantId: string }) {
       {error && (
         <div className="mb-6 w-full max-w-3xl rounded bg-red-500/10 border border-red-500 p-4 text-center text-red-500">
           {error}
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {showSuccess && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl bg-[#0f172a] p-8 border border-[#334155] text-center shadow-2xl">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#16a34a]/20">
+              <span className="text-3xl">✅</span>
+            </div>
+            <h2 className="mb-2 text-2xl font-bold text-white">Thank You!</h2>
+            <p className="mb-6 text-gray-300 text-sm leading-relaxed">
+              Thank you for choosing the plan. Our team will contact you soon.
+            </p>
+            <button
+              onClick={() => setShowSuccess(false)}
+              className="rounded bg-[#ff5e3a] px-8 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#ff4520] shadow-lg"
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
 
