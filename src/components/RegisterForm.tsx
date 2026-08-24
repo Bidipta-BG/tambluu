@@ -110,6 +110,9 @@ export default function RegisterForm() {
 
       const query = new URLSearchParams(searchParams.toString());
       query.set("tenantId", result.tenantId);
+      query.set("ownerName", fields.name.trim());
+      query.set("ownerEmail", fields.email.trim());
+      query.set("ownerPhone", fields.phone.trim());
       router.push(`/register/checkout?${query.toString()}`);
     } catch (err) {
       setSubmitError(

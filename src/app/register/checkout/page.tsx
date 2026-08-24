@@ -12,9 +12,15 @@ export const metadata: Metadata = {
 export default async function CheckoutPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tenantId?: string }>;
+  searchParams: Promise<{
+    tenantId?: string;
+    ownerName?: string;
+    ownerEmail?: string;
+    ownerPhone?: string;
+    plan?: string;
+  }>;
 }) {
-  const { tenantId } = await searchParams;
+  const { tenantId, ownerName, ownerEmail, ownerPhone, plan } = await searchParams;
 
   if (!tenantId) {
     redirect("/register");
@@ -26,7 +32,13 @@ export default async function CheckoutPage({
       <main className="flex-1 bg-dark-bg py-16">
         <div className="mx-auto max-w-5xl px-6">
           <Suspense fallback={<div className="h-96" />}>
-            <CheckoutView tenantId={tenantId} />
+            <CheckoutView
+              tenantId={tenantId}
+              ownerName={ownerName ?? ""}
+              ownerEmail={ownerEmail ?? ""}
+              ownerPhone={ownerPhone ?? ""}
+              plan={(plan === "monthly" ? "monthly" : "yearly") as "monthly" | "yearly"}
+            />
           </Suspense>
         </div>
       </main>

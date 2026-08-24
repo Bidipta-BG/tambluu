@@ -1,105 +1,71 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createCheckoutSession } from "@/lib/api";
+import { createCashfreeOrder } from "@/lib/api";
 import type { Plan } from "@/lib/api";
 
-const RAZORPAY_SCRIPT_URL = "https://checkout.razorpay.com/v1/checkout.js";
-
-function loadRazorpayScript(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (typeof window !== "undefined" && window.Razorpay) {
-      resolve();
-      return;
-    }
-    const existing = document.querySelector<HTMLScriptElement>(
-      `script[src="${RAZORPAY_SCRIPT_URL}"]`,
-    );
-    if (existing) {
-      existing.addEventListener("load", () => resolve(), { once: true });
-      existing.addEventListener(
-        "error",
-        () => reject(new Error("Failed to load payment script.")),
-        { once: true },
-      );
-      return;
-    }
-    const script = document.createElement("script");
-    script.src = RAZORPAY_SCRIPT_URL;
-    script.async = true;
-    script.onload = () => resolve();
-    script.onerror = () =>
-      reject(new Error("Could not load the Razorpay payment script."));
-    document.body.appendChild(script);
-  });
+interface CheckoutViewProps {
+  tenantId: string;
+  ownerName: string;
+  ownerEmail: string;
+  ownerPhone: string;
+  plan: Plan;
 }
 
-export default function CheckoutView({ tenantId }: { tenantId: string }) {
-  const router = useRouter();
+export default function CheckoutView({
+  tenantId,
+  ownerName,
+  ownerEmail,
+  ownerPhone,
+  plan: initialPlan,
+}: CheckoutViewProps) {
   const [processingPlan, setProcessingPlan] = useState<Plan | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleSelectPlan = useCallback(
-    async (plan: Plan) => {
-      setShowSuccess(true);
-      // Razorpay integration temporarily disabled for testing phase as requested.
-      // Later on, uncomment the logic below to integrate Razorpay.
-      
-      /*
-      setProcessingPlan(plan);
+    async (selectedPlan: Plan) => {
+      setProcessingPlan(selectedPlan);
       setError(null);
 
       try {
-        // 1. Fetch checkout session for selected plan
-        const sessionPromise = createCheckoutSession({ tenantId, plan });
-        // 2. Load razorpay script in parallel
-        const scriptPromise = loadRazorpayScript();
-
-        const session = await sessionPromise;
-        await scriptPromise;
-
-        if (!window.Razorpay) {
-          throw new Error("Razorpay SDK failed to load");
-        }
-
-        const rzp = new window.Razorpay({
-          key: session.keyId,
-          amount: session.amount,
-          currency: session.currency,
-          name: "StartTambola",
-          description: plan === "monthly" ? "Monthly Subscription" : "Yearly Subscription",
-          order_id: session.orderId,
-          theme: { color: "#ff3333" },
-
-          handler(response: any) {
-            const params = new URLSearchParams({
-              tenantId: session.tenantId,
-              paymentId: response.razorpay_payment_id,
-              orderId: response.razorpay_order_id,
-              phone: session.ownerPhone,
-            });
-            router.push(`/register/confirmation?${params.toString()}`);
-          },
-
-          modal: {
-            ondismiss() {
-              setProcessingPlan(null);
-            },
-            confirm_close: true,
-          },
+        // Step 1: Create Cashfree order via server-side Route Handler.
+        // The secret key never leaves the server.
+        const { paymentSessionId } = await createCashfreeOrder({
+          tenantId,
+          plan: selectedPlan,
+          ownerName,
+          ownerEmail,
+          ownerPhone,
         });
 
-        rzp.open();
+        // Step 2: Dynamically load the Cashfree JS SDK (browser-only, loaded on demand).
+        const { load } = await import("@cashfreepayments/cashfree-js");
+        const cashfree = await load({ mode: "production" });
+
+        if (!cashfree) {
+          throw new Error(
+            "Cashfree SDK failed to load. Please check your internet connection and try again.",
+          );
+        }
+
+        // Step 3: Open the Cashfree checkout in a modal popup.
+        // cashfree.checkout() returns a Promise that resolves when the
+        // modal is closed (either after payment or by the user).
+        await cashfree.checkout({
+          paymentSessionId,
+          redirectTarget: "_modal",
+        });
+
+        // After the modal closes, Cashfree will redirect to the return_url
+        // (configured in the create-order Route Handler) if payment succeeded.
+        // No additional action needed here — the redirect handles navigation.
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
+        setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
         setProcessingPlan(null);
       }
-      */
     },
-    [tenantId, router]
+    [tenantId, ownerName, ownerEmail, ownerPhone],
   );
 
   return (
@@ -110,32 +76,11 @@ export default function CheckoutView({ tenantId }: { tenantId: string }) {
         </div>
       )}
 
-      {/* Success Modal */}
-      {showSuccess && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl bg-[#0f172a] p-8 border border-[#334155] text-center shadow-2xl">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#16a34a]/20">
-              <span className="text-3xl">✅</span>
-            </div>
-            <h2 className="mb-2 text-2xl font-bold text-white">Thank You!</h2>
-            <p className="mb-6 text-gray-300 text-sm leading-relaxed">
-              Thank you for choosing the plan. Our team will contact you soon.
-            </p>
-            <button
-              onClick={() => setShowSuccess(false)}
-              className="rounded bg-[#ff5e3a] px-8 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#ff4520] shadow-lg"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
       <div className="grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
         {/* Monthly Card */}
         <div className="flex flex-col rounded-xl bg-white/5 border border-white/5 p-6 shadow-2xl">
           <h3 className="text-center text-xl font-bold text-[#ff9d4a] mb-6">Monthly basis</h3>
-          
+
           <div className="space-y-4 mb-8">
             <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10">
               4,500₹/month
@@ -152,7 +97,7 @@ export default function CheckoutView({ tenantId }: { tenantId: string }) {
             <button
               onClick={() => handleSelectPlan("monthly")}
               disabled={processingPlan !== null}
-              className="w-full rounded bg-[#ff5e3a] hover:bg-[#ff4520] px-4 py-3 text-sm font-bold text-white transition-colors disabled:opacity-50"
+              className="w-full rounded bg-[#ff5e3a] hover:bg-[#ff4520] px-4 py-3 text-sm font-bold text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {processingPlan === "monthly" ? "PROCESSING..." : "SELECT THIS"}
             </button>
@@ -162,7 +107,7 @@ export default function CheckoutView({ tenantId }: { tenantId: string }) {
         {/* Yearly Card */}
         <div className="flex flex-col rounded-xl bg-white/5 border border-white/5 p-6 shadow-2xl">
           <h3 className="text-center text-xl font-bold text-[#ff9d4a] mb-6">Yearly basis</h3>
-          
+
           <div className="space-y-4 mb-8">
             <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10">
               2,600₹/month
@@ -179,7 +124,7 @@ export default function CheckoutView({ tenantId }: { tenantId: string }) {
             <button
               onClick={() => handleSelectPlan("yearly")}
               disabled={processingPlan !== null}
-              className="w-full rounded bg-[#ff5e3a] hover:bg-[#ff4520] px-4 py-3 text-sm font-bold text-white transition-colors disabled:opacity-50"
+              className="w-full rounded bg-[#ff5e3a] hover:bg-[#ff4520] px-4 py-3 text-sm font-bold text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {processingPlan === "yearly" ? "PROCESSING..." : "SELECT THIS"}
             </button>

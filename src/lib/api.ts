@@ -83,35 +83,32 @@ export interface CreateTenantResponse {
   createdAt: string;
 }
 
-/** Payload sent to initiate a Razorpay checkout session. */
-export interface CreateCheckoutSessionInput {
-  /** The tenant for whom the order is being created. */
+/** Payload sent to the Next.js Route Handler to create a Cashfree order. */
+export interface CreateCashfreeOrderInput {
   tenantId: string;
-  /** The selected subscription plan. */
   plan: Plan;
+  ownerName: string;
+  ownerEmail: string;
+  ownerPhone: string;
 }
 
-/** Razorpay order details returned by the backend. */
-export interface CreateCheckoutSessionResponse {
-  /** Razorpay order ID ("order_XXXX"). */
+/** Response from the create-order Route Handler. */
+export interface CreateCashfreeOrderResponse {
+  /** Cashfree payment session ID — passed to cashfree.checkout() on the client. */
+  paymentSessionId: string;
+  /** Cashfree order ID — used for verification on the confirmation page. */
   orderId: string;
-  /** Razorpay public key ("rzp_live_XXX" or "rzp_test_XXX"). Safe to expose to the browser. */
-  keyId: string;
-  /** Amount to charge, in paise (1 INR = 100 paise). */
-  amount: number;
-  /** ISO currency code, e.g. "INR". */
-  currency: string;
-  /** Subscription plan associated with this order. */
-  plan: Plan;
-  /** Business name — used in the Razorpay modal and the order summary. */
-  businessName: string;
-  /** Echo of the tenantId for convenience. */
-  tenantId: string;
+}
+
+/** Response from the verify-order Route Handler. */
+export interface VerifyCashfreeOrderResponse {
   /**
-   * Owner's phone number — passed through to the confirmation page so the
-   * success message can tell the user which number their links will be sent to.
+   * Cashfree order status.
+   * A payment is successful only when this equals "PAID".
    */
-  ownerPhone: string;
+  orderStatus: "PAID" | "ACTIVE" | "EXPIRED" | "CANCELLED" | "TERMINATION_REQUESTED" | string;
+  /** Cashfree payment ID for the completed transaction, if available. */
+  cfPaymentId: string | null;
 }
 
 export interface Theme {
@@ -199,28 +196,52 @@ export async function createTenant(
 }
 
 /**
- * Create a Razorpay order for the given tenant.
+ * Create a Cashfree order via the Next.js Route Handler.
  *
- * Calls POST /tenants/{tenantId}/checkout-session.
- * The backend looks up the tenant's plan and amount, creates a Razorpay order,
- * and returns the order details needed to open the payment modal client-side.
+ * This calls our own /api/cashfree/create-order endpoint which holds the
+ * Cashfree secret key server-side. The browser never sees the secret key.
+ *
+ * Returns the paymentSessionId needed to open the Cashfree checkout modal.
  */
-export async function createCheckoutSession(
-  input: CreateCheckoutSessionInput,
-): Promise<CreateCheckoutSessionResponse> {
-  // Mock response for UI testing until backend is connected
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        orderId: "order_" + Date.now(),
-        keyId: "rzp_test_mockKey123",
-        amount: input.plan === "monthly" ? 560000 : 3120000,
-        currency: "INR",
-        plan: input.plan,
-        businessName: "Mock Tambola Business",
-        tenantId: input.tenantId,
-        ownerPhone: "9876543210",
-      });
-    }, 1000);
+export async function createCashfreeOrder(
+  input: CreateCashfreeOrderInput,
+): Promise<CreateCashfreeOrderResponse> {
+  const response = await fetch("/api/cashfree/create-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
   });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(
+      data.error ?? `Failed to create payment order (${response.status}).`,
+    );
+  }
+
+  return response.json() as Promise<CreateCashfreeOrderResponse>;
+}
+
+/**
+ * Verify a Cashfree order's payment status via the Next.js Route Handler.
+ *
+ * Should be called server-side (from the confirmation page) before delivering
+ * any service to the customer. Only trust the result when orderStatus === "PAID".
+ */
+export async function verifyCashfreeOrder(
+  orderId: string,
+): Promise<VerifyCashfreeOrderResponse> {
+  const response = await fetch(
+    `/api/cashfree/verify-order?order_id=${encodeURIComponent(orderId)}`,
+    { cache: "no-store" },
+  );
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(
+      data.error ?? `Failed to verify payment (${response.status}).`,
+    );
+  }
+
+  return response.json() as Promise<VerifyCashfreeOrderResponse>;
 }

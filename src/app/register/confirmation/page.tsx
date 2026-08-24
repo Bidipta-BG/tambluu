@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export const metadata: Metadata = {
   title: "You're in! — Tambluu",
   description:
-    "Payment received. Your branded Tambola website is being set up and your links will arrive on WhatsApp within 24 hours.",
+    "Payment received. Your branded Tambola website is being set up and our team will contact you within 12 hours.",
 };
 
 // ---------------------------------------------------------------------------
@@ -42,6 +42,27 @@ function SuccessIcon() {
   );
 }
 
+function FailureIcon() {
+  return (
+    <div className="relative mx-auto flex h-24 w-24 items-center justify-center">
+      <span aria-hidden className="absolute inset-0 rounded-full bg-red-100" />
+      <span aria-hidden className="absolute inset-3 rounded-full bg-red-200" />
+      <svg
+        aria-hidden
+        className="relative h-10 w-10 text-red-600"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </div>
+  );
+}
+
 function InfoRow({
   label,
   value,
@@ -64,7 +85,7 @@ const FAQ_ITEMS = [
     id: "what-happens-next",
     question: "What happens next?",
     answer:
-      "Your Tambola platform has been automatically created! You will receive your Admin and Player WhatsApp links shortly.",
+      "Your Tambola platform has been automatically created! Our team will contact you within 12 hours with your Admin and Player WhatsApp links.",
   },
   {
     id: "dns-instructions",
@@ -124,6 +145,38 @@ function FaqItem({
 }
 
 // ---------------------------------------------------------------------------
+// Server-side payment verification helper
+// ---------------------------------------------------------------------------
+
+async function verifyPayment(orderId: string): Promise<{
+  isPaid: boolean;
+  cfPaymentId: string | null;
+}> {
+  try {
+    // Use an absolute URL for server-side fetch inside a Route Handler.
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    const res = await fetch(
+      `${baseUrl}/api/cashfree/verify-order?order_id=${encodeURIComponent(orderId)}`,
+      { cache: "no-store" },
+    );
+
+    if (!res.ok) {
+      console.error("verify-order response not ok:", res.status);
+      return { isPaid: false, cfPaymentId: null };
+    }
+
+    const data = await res.json();
+    return {
+      isPaid: data.orderStatus === "PAID",
+      cfPaymentId: data.cfPaymentId ?? null,
+    };
+  } catch (err) {
+    console.error("verifyPayment error:", err);
+    return { isPaid: false, cfPaymentId: null };
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Page
 // ---------------------------------------------------------------------------
 
@@ -131,21 +184,25 @@ export default async function ConfirmationPage({
   searchParams,
 }: {
   searchParams: Promise<{
+    order_id?: string;
     tenantId?: string;
     phone?: string;
-    paymentId?: string;
-    orderId?: string;
   }>;
 }) {
-  const { tenantId, phone, paymentId, orderId } = await searchParams;
+  const { order_id, tenantId, phone } = await searchParams;
 
   // Guard: must arrive here via the checkout flow.
   if (!tenantId) {
     redirect("/register");
   }
 
+  // Verify the payment status before showing the success screen.
+  const { isPaid, cfPaymentId } = order_id
+    ? await verifyPayment(order_id)
+    : { isPaid: false, cfPaymentId: null };
+
   // Mask all but the last 4 digits of the phone number for display.
-  // e.g. "+91 98765 43210" → "+91 ••••• 3210"
+  // e.g. "9876543210" → "••••••3210"
   const maskedPhone = phone
     ? phone.replace(/\d(?=\d{4})/g, "•")
     : null;
@@ -175,32 +232,49 @@ export default async function ConfirmationPage({
 
           {/* ── Step indicator ── */}
           <div className="mb-8 text-center">
-            <span className="inline-block rounded-full bg-green-100 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-green-700">
-              Step 3 of 3 — You&apos;re in!
+            <span className={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-widest ${isPaid ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+              {isPaid ? "Step 3 of 3 — You're in!" : "Payment Incomplete"}
             </span>
           </div>
 
-          {/* ── Success card ── */}
-          <div className="rounded-2xl border border-green-200 bg-white px-6 py-8 shadow-sm sm:px-8">
+          {/* ── Main card ── */}
+          <div className={`rounded-2xl border px-6 py-8 shadow-sm sm:px-8 bg-white ${isPaid ? "border-green-200" : "border-red-200"}`}>
 
-            {/* Icon */}
-            <SuccessIcon />
+            {isPaid ? <SuccessIcon /> : <FailureIcon />}
 
             {/* Headline */}
             <div className="mt-6 text-center">
-              <h1 className="text-2xl font-bold tracking-tight text-[--color-foreground]">
-                Payment received!
-              </h1>
-              <p className="mt-3 text-base leading-relaxed text-[--color-muted]">
-                Your Tambola website is being set up. You&apos;ll receive your{" "}
-                <strong className="font-semibold text-[--color-foreground]">
-                  Player, Admin, and Agent links
-                </strong>{" "}
-                on WhatsApp within 24 hours.
-              </p>
+              {isPaid ? (
+                <>
+                  <h1 className="text-2xl font-bold tracking-tight text-[--color-foreground]">
+                    Payment Successful!
+                  </h1>
+                  <p className="mt-3 text-base leading-relaxed text-[--color-muted]">
+                    Your Tambola website is being set up.{" "}
+                    <strong className="font-semibold text-[--color-foreground]">
+                      Our team will contact you within 12 hours
+                    </strong>{" "}
+                    with your Player, Admin, and Agent links on WhatsApp.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h1 className="text-2xl font-bold tracking-tight text-[--color-foreground]">
+                    Payment Not Confirmed
+                  </h1>
+                  <p className="mt-3 text-base leading-relaxed text-[--color-muted]">
+                    We could not confirm your payment. If you believe this is a mistake,
+                    please contact us at{" "}
+                    <a href="mailto:hello@tambluu.com" className="font-semibold text-[--color-foreground] underline">
+                      hello@tambluu.com
+                    </a>{" "}
+                    with your order reference below.
+                  </p>
+                </>
+              )}
 
-              {/* Phone callout */}
-              {maskedPhone && (
+              {/* Phone callout — only on success */}
+              {isPaid && maskedPhone && (
                 <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-2">
                   {/* WhatsApp icon */}
                   <svg
@@ -224,11 +298,11 @@ export default async function ConfirmationPage({
             {/* Reference details */}
             <div className="divide-y divide-[--color-border] rounded-lg bg-[--color-subtle] px-4">
               <InfoRow label="Store reference" value={tenantId} />
-              {paymentId && (
-                <InfoRow label="Payment ID" value={paymentId} />
+              {order_id && (
+                <InfoRow label="Order ID" value={order_id} />
               )}
-              {orderId && (
-                <InfoRow label="Order ID" value={orderId} />
+              {cfPaymentId && (
+                <InfoRow label="Payment ID" value={cfPaymentId} />
               )}
             </div>
 
@@ -249,20 +323,22 @@ export default async function ConfirmationPage({
             </Link>
           </div>
 
-          {/* ── FAQ ── */}
-          <section aria-labelledby="faq-heading" className="mt-10">
-            <h2
-              id="faq-heading"
-              className="mb-4 text-center text-sm font-semibold uppercase tracking-widest text-[--color-muted]"
-            >
-              What happens next?
-            </h2>
-            <div className="space-y-3">
-              {FAQ_ITEMS.map((item) => (
-                <FaqItem key={item.id} {...item} />
-              ))}
-            </div>
-          </section>
+          {/* ── FAQ — only shown on success ── */}
+          {isPaid && (
+            <section aria-labelledby="faq-heading" className="mt-10">
+              <h2
+                id="faq-heading"
+                className="mb-4 text-center text-sm font-semibold uppercase tracking-widest text-[--color-muted]"
+              >
+                What happens next?
+              </h2>
+              <div className="space-y-3">
+                {FAQ_ITEMS.map((item) => (
+                  <FaqItem key={item.id} {...item} />
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* ── Support nudge ── */}
           <p className="mt-8 text-center text-sm text-[--color-muted]">
