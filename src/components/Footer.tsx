@@ -42,7 +42,7 @@ export default function Footer() {
           <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-6">Company</h3>
           <ul className="space-y-4 text-sm">
             <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
-            <li><a href="https://api.whatsapp.com/send?phone=+9196096914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question." target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Contact Us</a></li>
+            <li><a href="https://api.whatsapp.com/send?phone=9196096914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question." target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Contact Us</a></li>
           </ul>
         </div>
       </div>

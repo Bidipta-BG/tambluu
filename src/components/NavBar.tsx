@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { label: "Refund Policy", href: "/refund-policy" },
   { label: "Terms of Service", href: "/terms-of-service" },
   { label: "About Us", href: "/about" },
-  { label: "Contact Us", href: "https://api.whatsapp.com/send?phone=+9196096914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question." },
+  { label: "Contact Us", href: "https://api.whatsapp.com/send?phone=9196096914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question." },
 ];
 
 export default function NavBar() {
@@ -57,7 +57,7 @@ export default function NavBar() {
           {/* Simple Mode: Contact Us on the far right */}
           {isSimpleMode && (
             <a 
-              href="https://api.whatsapp.com/send?phone=+9196096914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question." 
+              href="https://api.whatsapp.com/send?phone=9196096914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question." 
               target="_blank" 
               rel="noreferrer" 
               className="text-xs sm:text-sm font-medium transition-colors hover:text-white text-gray-300"
