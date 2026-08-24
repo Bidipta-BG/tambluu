@@ -97,13 +97,13 @@ const FAQ_ITEMS = [
     id: "change-domain",
     question: "Can I change my domain later?",
     answer:
-      "Yes — contact us within the first 7 days and we can change it at no extra charge. After that, domain changes may incur a small fee depending on your current plan. Get in touch at hello@tambluu.com.",
+      "Yes — contact us within the first 7 days and we can change it at no extra charge. After that, domain changes may incur a small fee depending on your current plan. Get in touch at xomdigital@gmail.com.",
   },
   {
     id: "contact-support",
     question: "How do I contact support?",
     answer:
-      "Email us at hello@tambluu.com or WhatsApp us at +91 XXXXX XXXXX (placeholder — the real number will be added here). We respond within a few hours on business days.",
+      "Email us at xomdigital@gmail.com or WhatsApp us at +91 96069 14772 (placeholder — the real number will be added here). We respond within a few hours on business days.",
   },
 ] as const;
 
@@ -152,23 +152,40 @@ async function verifyPayment(orderId: string): Promise<{
   isPaid: boolean;
   cfPaymentId: string | null;
 }> {
-  try {
-    // Use an absolute URL for server-side fetch inside a Route Handler.
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-    const res = await fetch(
-      `${baseUrl}/api/cashfree/verify-order?order_id=${encodeURIComponent(orderId)}`,
-      { cache: "no-store" },
-    );
+  const appId = process.env.CASHFREE_APP_ID;
+  const secretKey = process.env.CASHFREE_SECRET_KEY;
 
-    if (!res.ok) {
-      console.error("verify-order response not ok:", res.status);
+  if (!appId || !secretKey) {
+    console.error("Cashfree credentials are not configured on the server.");
+    return { isPaid: false, cfPaymentId: null };
+  }
+
+  try {
+    const cfResponse = await fetch(`https://api.cashfree.com/pg/orders/${encodeURIComponent(orderId)}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "x-api-version": "2025-01-01",
+        "x-client-id": appId,
+        "x-client-secret": secretKey,
+      },
+      cache: "no-store",
+    });
+
+    if (!cfResponse.ok) {
+      console.error("Cashfree verify-order error:", cfResponse.status);
       return { isPaid: false, cfPaymentId: null };
     }
 
-    const data = await res.json();
+    const cfData = await cfResponse.json();
+    
+    // Extract the most recent payment ID if available.
+    const payments: Array<{ cf_payment_id?: string }> = cfData.order_payments ?? [];
+    const cfPaymentId = payments[0]?.cf_payment_id?.toString() ?? null;
+
     return {
-      isPaid: data.orderStatus === "PAID",
-      cfPaymentId: data.cfPaymentId ?? null,
+      isPaid: cfData.order_status === "PAID",
+      cfPaymentId,
     };
   } catch (err) {
     console.error("verifyPayment error:", err);
@@ -219,7 +236,7 @@ export default async function ConfirmationPage({
             tambluu
           </Link>
           <a
-            href="mailto:hello@tambluu.com"
+            href="mailto:xomdigital@gmail.com"
             className="text-sm text-[--color-muted] hover:text-[--color-foreground]"
           >
             Need help?
@@ -265,8 +282,8 @@ export default async function ConfirmationPage({
                   <p className="mt-3 text-base leading-relaxed text-[--color-muted]">
                     We could not confirm your payment. If you believe this is a mistake,
                     please contact us at{" "}
-                    <a href="mailto:hello@tambluu.com" className="font-semibold text-[--color-foreground] underline">
-                      hello@tambluu.com
+                    <a href="mailto:xomdigital@gmail.com" className="font-semibold text-[--color-foreground] underline">
+                      xomdigital@gmail.com
                     </a>{" "}
                     with your order reference below.
                   </p>
@@ -344,10 +361,10 @@ export default async function ConfirmationPage({
           <p className="mt-8 text-center text-sm text-[--color-muted]">
             Questions? Email{" "}
             <a
-              href="mailto:hello@tambluu.com"
+              href="mailto:xomdigital@gmail.com"
               className="font-medium text-[--color-accent] underline underline-offset-2 hover:text-[--color-accent-hover]"
             >
-              hello@tambluu.com
+              xomdigital@gmail.com
             </a>{" "}
             — we reply within a few hours.
           </p>
