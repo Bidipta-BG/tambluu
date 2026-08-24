@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 const CASHFREE_BASE_URL = "https://api.cashfree.com/pg";
 const API_VERSION = "2025-01-01";
 
-// TODO: revert to real amounts (monthly: 4500, yearly: 31200) after testing.
+// Production amounts
 const PLAN_AMOUNTS: Record<string, number> = {
-  monthly: 1,
-  yearly: 2,
+  monthly: 4500,
+  yearly: 31200,
 };
 
 /**
