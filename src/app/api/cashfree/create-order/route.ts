@@ -93,12 +93,6 @@ export async function POST(request: NextRequest) {
     order_meta: {
       return_url: returnUrl,
     },
-    order_tags: {
-      checkout_context:
-        plan === "monthly"
-          ? "StartTambola — Monthly Plan (₹4,500/month)"
-          : "StartTambola — Yearly Plan (₹31,200/year)",
-    },
   };
 
   const cfResponse = await fetch(`${CASHFREE_BASE_URL}/orders`, {
