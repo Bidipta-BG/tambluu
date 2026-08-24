@@ -104,11 +104,11 @@ const STEPS = [
 ];
 
 const THEMES = [
-  { id: "festival-glow", name: "FESTIVAL GLOW", src: "/images/1festivalglow.png" },
-  { id: "northeast-essence", name: "NORTHEAST ESSENCE", src: "/images/2northeastessence.png" },
-  { id: "royal-tambola", name: "ROYAL TAMBOLA", src: "/images/3royaltambola.png" },
-  { id: "neon-night", name: "NEON NIGHT", src: "/images/4neonnight.png" },
-  { id: "color-splash", name: "COLOR SPLASH", src: "/images/5colorsplash.png" },
+  { id: "festival-glow", name: "FESTIVAL GLOW", src: "/images/1festivalglow.jpg" },
+  { id: "northeast-essence", name: "NORTHEAST ESSENCE", src: "/images/2northeastessence.jpg" },
+  { id: "royal-tambola", name: "ROYAL TAMBOLA", src: "/images/3royaltambola.jpg" },
+  { id: "neon-night", name: "NEON NIGHT", src: "/images/4neonnight.jpg" },
+  { id: "color-splash", name: "COLOR SPLASH", src: "/images/5colorsplash.jpg" },
 ];
 
 const FAQS = [
