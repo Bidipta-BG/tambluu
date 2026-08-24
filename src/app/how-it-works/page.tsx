@@ -62,9 +62,14 @@ export default function HowItWorksPage() {
             <p className="text-gray-300 text-sm mb-6">
               We provide 24x7 support. Click below to chat with us on WhatsApp.
             </p>
-            <button className="rounded bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/20 border border-white/10">
+            <a 
+              href="https://api.whatsapp.com/send?phone=96096914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question."
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block rounded bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/20 border border-white/10"
+            >
               Chat with Support
-            </button>
+            </a>
           </div>
 
         </div>

@@ -18,7 +18,7 @@ export default function RefundPolicyPage() {
           </h1>
           
           <p className="text-gray-300 text-sm leading-relaxed mb-10">
-            At <strong className="text-white font-semibold">StartTambola.com</strong>, we provide a self-service platform for creating your own Tambola hosting websites with custom .com domains. Please read our refund policy carefully before purchasing.
+            At <strong className="text-white font-semibold">starttambola.in</strong>, we provide a self-service platform for creating your own Tambola hosting websites with custom .online domains. Please read our refund policy carefully before purchasing.
           </p>
 
           <div className="space-y-10">
@@ -27,7 +27,7 @@ export default function RefundPolicyPage() {
                 1. Payment Handling and Responsibility
               </h2>
               <p className="text-gray-300 text-sm leading-relaxed">
-                All transactions are processed via Razorpay. If money is deducted from your UPI app or bank but not reflected on our system, we are not responsible. The issue lies with Razorpay or your bank.
+                All transactions are processed via Cashfree. If money is deducted from your UPI app or bank but not reflected on our system, we are not responsible. The issue lies with Cashfree or your bank.
               </p>
             </section>
 
@@ -36,7 +36,7 @@ export default function RefundPolicyPage() {
                 2. Refund Timing and Processing
               </h2>
               <p className="text-gray-300 text-sm leading-relaxed">
-                All valid refunds are processed only via Razorpay and take 5 to 7 business days. We do not refund via personal QR codes or direct transfers.
+                All valid refunds are processed only via Cashfree and take 5 to 7 business days. We do not refund via personal QR codes or direct transfers.
               </p>
             </section>
 

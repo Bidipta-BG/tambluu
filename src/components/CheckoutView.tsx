@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createCashfreeOrder } from "@/lib/api";
 import type { Plan } from "@/lib/api";
@@ -20,6 +21,7 @@ export default function CheckoutView({
   ownerPhone,
   plan: initialPlan,
 }: CheckoutViewProps) {
+  const router = useRouter();
   const [processingPlan, setProcessingPlan] = useState<Plan | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,8 +32,7 @@ export default function CheckoutView({
 
       try {
         // Step 1: Create Cashfree order via server-side Route Handler.
-        // The secret key never leaves the server.
-        const { paymentSessionId } = await createCashfreeOrder({
+        const { paymentSessionId, orderId } = await createCashfreeOrder({
           tenantId,
           plan: selectedPlan,
           ownerName,
@@ -50,22 +51,26 @@ export default function CheckoutView({
         }
 
         // Step 3: Open the Cashfree checkout in a modal popup.
-        // cashfree.checkout() returns a Promise that resolves when the
-        // modal is closed (either after payment or by the user).
+        // In _modal mode, cashfree does NOT auto-redirect to return_url.
+        // The promise resolves when the modal closes (after payment or dismissal).
         await cashfree.checkout({
           paymentSessionId,
           redirectTarget: "_modal",
         });
 
-        // After the modal closes, Cashfree will redirect to the return_url
-        // (configured in the create-order Route Handler) if payment succeeded.
-        // No additional action needed here — the redirect handles navigation.
+        // Step 4: Modal closed — redirect to confirmation page for server-side verification.
+        const params = new URLSearchParams({
+          order_id: orderId,
+          tenantId,
+          phone: ownerPhone,
+        });
+        router.push(`/register/confirmation?${params.toString()}`);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
         setProcessingPlan(null);
       }
     },
-    [tenantId, ownerName, ownerEmail, ownerPhone],
+    [tenantId, ownerName, ownerEmail, ownerPhone, router],
   );
 
   return (

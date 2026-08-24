@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "About Us — StartTambola",
-  description: "Learn more about ONCdigital Web designer and the team behind StartTambola.",
+  description: "Learn more about XOM Digital Web designer and the team behind StartTambola.",
 };
 
 export default function AboutPage() {
@@ -15,11 +15,11 @@ export default function AboutPage() {
       <main className="flex-1 bg-black py-16">
         <div className="mx-auto max-w-3xl px-6">
           <h1 className="text-3xl font-bold text-red-500 mb-8">
-            About ONCdigital Web designer
+            About XOM Digital Web designer
           </h1>
           
           <p className="text-gray-300 text-sm leading-relaxed mb-4">
-            ONCdigital is a web design team founded by professionals from Northeast India. We specialize in creating visually appealing websites, web applications, and digital platforms that combine creativity, usability, and technology.
+            XOM Digital is a web design team founded by professionals from Bangalore India. We specialize in creating visually appealing websites, web applications, and digital platforms that combine creativity, usability, and technology.
           </p>
           <p className="text-gray-300 text-sm leading-relaxed mb-10">
             Our mission is to help communities establish a strong digital presence through professionally designed web solutions.
@@ -63,7 +63,7 @@ export default function AboutPage() {
                 We believe technology should reflect creativity and cultural identity.
               </p>
               <p className="text-gray-300 text-sm leading-relaxed">
-                Inspired by the diverse cultures of Northeast India, we bring artistic thinking into our design process, creating interfaces that are both functional and visually expressive.
+                Inspired by the diverse cultures of India, we bring artistic thinking into our design process, creating interfaces that are both functional and visually expressive.
               </p>
             </section>
 
@@ -72,7 +72,7 @@ export default function AboutPage() {
                 Service Scope
               </h2>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                StartTambola.com operates as a web design and development service. Our primary focus is providing beautifully designed websites through our collection of professionally designed themes and web technologies.
+                starttambola.in operates as a web design and development service. Our primary focus is providing beautifully designed websites through our collection of professionally designed themes and web technologies.
               </p>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
                 We provide website design, development, deployment, maintenance, and related technical services. We do not provide payment processing, wallet services, betting, gambling services, prize distribution, or any form of monetary transaction facility.
@@ -94,21 +94,21 @@ export default function AboutPage() {
                 <div className="flex items-center gap-2 text-sm text-gray-300">
                   <span>✉️</span>
                   <span>Email:</span>
-                  <a href="mailto:oncdigitalproduct@gmail.com" className="text-red-500 hover:underline">
-                    oncdigitalproduct@gmail.com
+                  <a href="mailto:xomdigital@gmail.com" className="text-red-500 hover:underline">
+                    xomdigital@gmail.com
                   </a>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-300">
                   <span>💬</span>
                   <span>WhatsApp:</span>
-                  <a href="https://wa.me/919863624632" target="_blank" rel="noreferrer" className="text-red-500 hover:underline">
-                    +91 98636 24632
+                  <a href="https://wa.me/919606914772" target="_blank" rel="noreferrer" className="text-red-500 hover:underline">
+                    +91 96069 14772
                   </a>
                 </div>
               </div>
 
               <a 
-                href="https://wa.me/919863624632"
+                href="https://wa.me/919606914772"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-block rounded bg-red-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-700"

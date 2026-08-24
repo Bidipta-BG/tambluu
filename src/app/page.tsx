@@ -93,7 +93,7 @@ const STEPS = [
   },
   {
     title: "Make Payment",
-    description: "Complete secure payment via Razorpay.",
+    description: "Complete secure payment via Cashfree.",
     icon: "💳",
   },
   {
