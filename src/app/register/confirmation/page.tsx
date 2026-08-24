@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "You're in! — Tambluu",
+  title: "You're in! — Starttambola",
   description:
     "Payment received. Your branded Tambola website is being set up and our team will contact you within 12 hours.",
 };
@@ -88,22 +88,10 @@ const FAQ_ITEMS = [
       "Your Tambola platform has been automatically created! Our team will contact you within 12 hours with your Admin and Player WhatsApp links.",
   },
   {
-    id: "dns-instructions",
-    question: "How do I connect my domain?",
-    answer:
-      "To make your website live, log into your domain registrar (GoDaddy, Namecheap, etc.) and add an A Record pointing to the IP address 76.76.21.21. Your site will instantly go live once the DNS propagates.",
-  },
-  {
-    id: "change-domain",
-    question: "Can I change my domain later?",
-    answer:
-      "Yes — contact us within the first 7 days and we can change it at no extra charge. After that, domain changes may incur a small fee depending on your current plan. Get in touch at xomdigital@gmail.com.",
-  },
-  {
     id: "contact-support",
     question: "How do I contact support?",
     answer:
-      "Email us at xomdigital@gmail.com or WhatsApp us at +91 96069 14772 (placeholder — the real number will be added here). We respond within a few hours on business days.",
+      "Email us at xomdigital@gmail.com or WhatsApp us at +91 96096 91477. We respond within a few hours on business days.",
   },
 ] as const;
 
@@ -231,13 +219,18 @@ export default async function ConfirmationPage({
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <Link
             href="/"
-            className="text-lg font-semibold tracking-tight text-[--color-foreground] transition-opacity hover:opacity-75"
+            className="flex items-center gap-2 text-lg font-semibold tracking-tight text-[--color-foreground] transition-opacity hover:opacity-75"
           >
-            tambluu
+            <div className="flex h-6 w-6 items-center justify-center rounded bg-black text-xs font-bold text-white">
+              ST
+            </div>
+            Starttambola.in
           </Link>
           <a
-            href="mailto:xomdigital@gmail.com"
-            className="text-sm text-[--color-muted] hover:text-[--color-foreground]"
+            href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20need%20help%20with%20my%20payment."
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm font-medium text-[--color-accent] hover:text-[--color-accent-hover] transition-colors"
           >
             Need help?
           </a>
@@ -271,7 +264,7 @@ export default async function ConfirmationPage({
                     <strong className="font-semibold text-[--color-foreground]">
                       Our team will contact you within 12 hours
                     </strong>{" "}
-                    with your Player, Admin, and Agent links on WhatsApp.
+                    with your Player, Admin, and Agent links on WhatsApp and/or email.
                   </p>
                 </>
               ) : (
@@ -281,9 +274,14 @@ export default async function ConfirmationPage({
                   </h1>
                   <p className="mt-3 text-base leading-relaxed text-[--color-muted]">
                     We could not confirm your payment. If you believe this is a mistake,
-                    please contact us at{" "}
-                    <a href="mailto:xomdigital@gmail.com" className="font-semibold text-[--color-foreground] underline">
-                      xomdigital@gmail.com
+                    please contact us on{" "}
+                    <a 
+                      href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20have%20an%20issue%20with%20my%20payment." 
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-semibold text-[--color-foreground] underline"
+                    >
+                      WhatsApp
                     </a>{" "}
                     with your order reference below.
                   </p>
@@ -336,7 +334,7 @@ export default async function ConfirmationPage({
               href="/"
               className="block w-full rounded-lg border border-[--color-border] bg-white py-3 text-center text-sm font-medium text-[--color-foreground] transition-colors hover:bg-[--color-subtle]"
             >
-              ← Back to tambluu.com
+              ← Back to starttambola.in
             </Link>
           </div>
 
@@ -359,12 +357,14 @@ export default async function ConfirmationPage({
 
           {/* ── Support nudge ── */}
           <p className="mt-8 text-center text-sm text-[--color-muted]">
-            Questions? Email{" "}
+            Questions?{" "}
             <a
-              href="mailto:xomdigital@gmail.com"
+              href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question."
+              target="_blank"
+              rel="noreferrer"
               className="font-medium text-[--color-accent] underline underline-offset-2 hover:text-[--color-accent-hover]"
             >
-              xomdigital@gmail.com
+              Chat with us on WhatsApp
             </a>{" "}
             — we reply within a few hours.
           </p>
@@ -373,7 +373,7 @@ export default async function ConfirmationPage({
 
       <footer className="border-t border-[--color-border] bg-[--color-subtle]">
         <div className="mx-auto max-w-5xl px-6 py-6 text-center text-xs text-[--color-muted]">
-          &copy; {new Date().getFullYear()} Tambluu. All rights reserved.
+          &copy; {new Date().getFullYear()} XOM Digital. All rights reserved.
         </div>
       </footer>
     </>

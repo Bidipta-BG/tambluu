@@ -63,7 +63,7 @@ export default function HowItWorksPage() {
               We provide 24x7 support. Click below to chat with us on WhatsApp.
             </p>
             <a 
-              href="https://api.whatsapp.com/send?phone=96096914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question."
+              href="https://api.whatsapp.com/send?phone=+9196096914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question."
               target="_blank"
               rel="noreferrer"
               className="inline-block rounded bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/20 border border-white/10"

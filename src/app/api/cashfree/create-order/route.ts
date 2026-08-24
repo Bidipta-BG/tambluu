@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
       {
         error:
           "CASHFREE_RETURN_URL_BASE is not configured or is not an https:// URL. " +
-          "Set it to your production domain (e.g. https://tambluu.com) in .env.local.",
+          "Set it to your production domain (e.g. https://starttambola.in) in .env.local.",
       },
       { status: 500 }
     );
