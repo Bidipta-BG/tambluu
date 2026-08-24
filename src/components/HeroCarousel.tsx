@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const CAROUSEL_IMAGES = [
-  "/images/1festivalglow.png",
-  "/images/2northeastessence.png",
-  "/images/3royaltambola.png",
-  "/images/4neonnight.png",
-  "/images/5colorsplash.png",
+  "/images/1festivalglow.jpg",
+  "/images/2northeastessence.jpg",
+  "/images/3royaltambola.jpg",
+  "/images/4neonnight.jpg",
+  "/images/5colorsplash.jpg",
 ];
 
 export default function HeroCarousel() {
