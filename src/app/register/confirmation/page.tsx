@@ -72,8 +72,8 @@ function InfoRow({
 }) {
   return (
     <div className="flex items-start justify-between gap-4 py-2.5 text-sm">
-      <span className="text-[--color-muted]">{label}</span>
-      <span className="break-all text-right font-medium text-[--color-foreground]">
+      <span className="text-gray-500">{label}</span>
+      <span className="break-all text-right font-medium text-gray-900">
         {value}
       </span>
     </div>
@@ -91,7 +91,7 @@ const FAQ_ITEMS = [
     id: "contact-support",
     question: "How do I contact support?",
     answer:
-      "Email us at xomdigital@gmail.com or WhatsApp us at +91 96096 91477. We respond within a few hours on business days.",
+      "WhatsApp us at +91 96096 91477. We respond within a few hours on business days.",
   },
 ] as const;
 
@@ -107,14 +107,13 @@ function FaqItem({
   return (
     <details
       id={id}
-      className="group rounded-xl border border-[--color-border] bg-white"
+      className="group rounded-xl border border-gray-200 bg-white"
     >
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-sm font-semibold text-[--color-foreground] marker:hidden">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-sm font-semibold text-gray-900 marker:hidden">
         {question}
-        {/* Chevron — rotates open via group-open */}
         <svg
           aria-hidden
-          className="h-4 w-4 shrink-0 text-[--color-muted] transition-transform duration-200 group-open:rotate-180"
+          className="h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200 group-open:rotate-180"
           viewBox="0 0 16 16"
           fill="currentColor"
         >
@@ -125,8 +124,8 @@ function FaqItem({
           />
         </svg>
       </summary>
-      <div className="border-t border-[--color-border] px-5 pb-4 pt-3">
-        <p className="text-sm leading-relaxed text-[--color-muted]">{answer}</p>
+      <div className="border-t border-gray-200 px-5 pb-4 pt-3">
+        <p className="text-sm leading-relaxed text-gray-500">{answer}</p>
       </div>
     </details>
   );
@@ -213,13 +212,13 @@ export default async function ConfirmationPage({
     : null;
 
   return (
-    <>
-      {/* Minimal nav */}
-      <header className="border-b border-[--color-border] bg-[--color-surface]">
+    <div style={{ colorScheme: "light" }} className="flex min-h-screen flex-col bg-gray-50 text-gray-900">
+      {/* Minimal nav — always light */}
+      <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <Link
             href="/"
-            className="flex items-center gap-2 text-lg font-semibold tracking-tight text-[--color-foreground] transition-opacity hover:opacity-75"
+            className="flex items-center gap-2 text-lg font-semibold tracking-tight text-gray-900 transition-opacity hover:opacity-75"
           >
             <div className="flex h-6 w-6 items-center justify-center rounded bg-black text-xs font-bold text-white">
               ST
@@ -230,14 +229,14 @@ export default async function ConfirmationPage({
             href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20need%20help%20with%20my%20payment."
             target="_blank"
             rel="noreferrer"
-            className="text-sm font-medium text-[--color-accent] hover:text-[--color-accent-hover] transition-colors"
+            className="text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
           >
             Need help?
           </a>
         </div>
       </header>
 
-      <main className="flex-1 bg-[--color-subtle]">
+      <main className="flex-1">
         <div className="mx-auto max-w-lg px-6 py-12">
 
           {/* ── Step indicator ── */}
@@ -256,30 +255,30 @@ export default async function ConfirmationPage({
             <div className="mt-6 text-center">
               {isPaid ? (
                 <>
-                  <h1 className="text-2xl font-bold tracking-tight text-[--color-foreground]">
+                  <h1 className="text-2xl font-bold tracking-tight text-gray-900">
                     Payment Successful!
                   </h1>
-                  <p className="mt-3 text-base leading-relaxed text-[--color-muted]">
+                  <p className="mt-3 text-base leading-relaxed text-gray-500">
                     Your Tambola website is being set up.{" "}
-                    <strong className="font-semibold text-[--color-foreground]">
+                    <strong className="font-semibold text-gray-900">
                       Our team will contact you within 12 hours
                     </strong>{" "}
-                    with your Player, Admin, and Agent links on WhatsApp and/or email.
+                    with your Player, Admin, and Agent links on WhatsApp.
                   </p>
                 </>
               ) : (
                 <>
-                  <h1 className="text-2xl font-bold tracking-tight text-[--color-foreground]">
+                  <h1 className="text-2xl font-bold tracking-tight text-gray-900">
                     Payment Not Confirmed
                   </h1>
-                  <p className="mt-3 text-base leading-relaxed text-[--color-muted]">
+                  <p className="mt-3 text-base leading-relaxed text-gray-500">
                     We could not confirm your payment. If you believe this is a mistake,
                     please contact us on{" "}
-                    <a 
-                      href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20have%20an%20issue%20with%20my%20payment." 
+                    <a
+                      href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20have%20an%20issue%20with%20my%20payment."
                       target="_blank"
                       rel="noreferrer"
-                      className="font-semibold text-[--color-foreground] underline"
+                      className="font-semibold text-gray-900 underline"
                     >
                       WhatsApp
                     </a>{" "}
@@ -291,7 +290,6 @@ export default async function ConfirmationPage({
               {/* Phone callout — only on success */}
               {isPaid && maskedPhone && (
                 <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-2">
-                  {/* WhatsApp icon */}
                   <svg
                     aria-hidden
                     className="h-4 w-4 text-green-600"
@@ -308,10 +306,10 @@ export default async function ConfirmationPage({
             </div>
 
             {/* Divider */}
-            <hr className="my-6 border-[--color-border]" />
+            <hr className="my-6 border-gray-200" />
 
             {/* Reference details */}
-            <div className="divide-y divide-[--color-border] rounded-lg bg-[--color-subtle] px-4">
+            <div className="divide-y divide-gray-200 rounded-lg bg-gray-50 px-4">
               <InfoRow label="Store reference" value={tenantId} />
               {order_id && (
                 <InfoRow label="Order ID" value={order_id} />
@@ -321,18 +319,18 @@ export default async function ConfirmationPage({
               )}
             </div>
 
-            <p className="mt-3 text-center text-xs text-[--color-muted]">
+            <p className="mt-3 text-center text-xs text-gray-400">
               Keep these references handy in case you need to contact support.
             </p>
 
             {/* Divider */}
-            <hr className="my-6 border-[--color-border]" />
+            <hr className="my-6 border-gray-200" />
 
             {/* Return home */}
             <Link
               id="confirmation-home"
               href="/"
-              className="block w-full rounded-lg border border-[--color-border] bg-white py-3 text-center text-sm font-medium text-[--color-foreground] transition-colors hover:bg-[--color-subtle]"
+              className="block w-full rounded-lg border border-gray-200 bg-white py-3 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
             >
               ← Back to starttambola.in
             </Link>
@@ -343,7 +341,7 @@ export default async function ConfirmationPage({
             <section aria-labelledby="faq-heading" className="mt-10">
               <h2
                 id="faq-heading"
-                className="mb-4 text-center text-sm font-semibold uppercase tracking-widest text-[--color-muted]"
+                className="mb-4 text-center text-sm font-semibold uppercase tracking-widest text-gray-400"
               >
                 What happens next?
               </h2>
@@ -356,13 +354,13 @@ export default async function ConfirmationPage({
           )}
 
           {/* ── Support nudge ── */}
-          <p className="mt-8 text-center text-sm text-[--color-muted]">
+          <p className="mt-8 text-center text-sm text-gray-500">
             Questions?{" "}
             <a
               href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question."
               target="_blank"
               rel="noreferrer"
-              className="font-medium text-[--color-accent] underline underline-offset-2 hover:text-[--color-accent-hover]"
+              className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700"
             >
               Chat with us on WhatsApp
             </a>{" "}
@@ -371,11 +369,11 @@ export default async function ConfirmationPage({
         </div>
       </main>
 
-      <footer className="border-t border-[--color-border] bg-[--color-subtle]">
-        <div className="mx-auto max-w-5xl px-6 py-6 text-center text-xs text-[--color-muted]">
-          &copy; {new Date().getFullYear()} XOM Digital. All rights reserved.
+      <footer className="border-t border-gray-200 bg-gray-50">
+        <div className="mx-auto max-w-5xl px-6 py-6 text-center text-xs text-gray-400">
+          &copy; {new Date().getFullYear()} StartTambola. All rights reserved.
         </div>
       </footer>
-    </>
+    </div>
   );
 }
