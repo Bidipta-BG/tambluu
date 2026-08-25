@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import DemoVideoModal from "@/components/DemoVideoModal";
 
 export const metadata: Metadata = {
-  title: "How It Works — StartTambola",
-  description: "Learn how to register and run your own Tambola game easily with StartTambola.",
+  title: "How It Works — GetTambola",
+  description: "Learn how to register and run your own Tambola game easily with GetTambola.",
 };
 
 export default function HowItWorksPage() {
@@ -17,11 +18,14 @@ export default function HowItWorksPage() {
           {/* Header Section */}
           <div className="rounded-2xl bg-white/5 border border-white/10 p-10 text-center mb-8">
             <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-3">
-              How StartTambola Works?
+              How GetTambola Works?
             </h1>
             <p className="text-gray-400 text-sm">
               Generate a Tambola game link in a few clicks. No account, no login.
             </p>
+            
+            {/* Video Demo Button */}
+            <DemoVideoModal />
           </div>
 
           {/* Section 1 */}
@@ -63,7 +67,7 @@ export default function HowItWorksPage() {
               We provide 24x7 support. Click below to chat with us on WhatsApp.
             </p>
             <a 
-              href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question."
+              href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20GetTambola%20team!%20I%20have%20a%20question."
               target="_blank"
               rel="noreferrer"
               className="inline-block rounded bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/20 border border-white/10"

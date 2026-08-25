@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/private/', '/api/'], // Disallow crawling of internal API or private routes
     },
-    sitemap: 'https://starttambola.in/sitemap.xml',
+    sitemap: 'https://gettambola.in/sitemap.xml',
   };
 }

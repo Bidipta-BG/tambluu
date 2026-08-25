@@ -5,7 +5,7 @@ import NavBar from "@/components/NavBar";
 import CheckoutView from "@/components/CheckoutView";
 
 export const metadata: Metadata = {
-  title: "Pricing & Checkout — StartTambola",
+  title: "Pricing & Checkout — GetTambola",
   description: "Select your subscription plan and complete your payment.",
 };
 

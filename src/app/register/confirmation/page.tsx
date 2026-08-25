@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "You're in! — Starttambola",
+  title: "You're in! — GetTambola",
   description:
     "Payment received. Your branded Tambola website is being set up and our team will contact you within 12 hours.",
 };
@@ -221,12 +221,12 @@ export default async function ConfirmationPage({
             className="flex items-center gap-2 text-lg font-semibold tracking-tight text-gray-900 transition-opacity hover:opacity-75"
           >
             <div className="flex h-6 w-6 items-center justify-center rounded bg-black text-xs font-bold text-white">
-              ST
+              GT
             </div>
-            Starttambola.in
+            GetTambola.in
           </Link>
           <a
-            href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20need%20help%20with%20my%20payment."
+            href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20GetTambola%20team!%20I%20need%20help%20with%20my%20payment."
             target="_blank"
             rel="noreferrer"
             className="text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
@@ -275,7 +275,7 @@ export default async function ConfirmationPage({
                     We could not confirm your payment. If you believe this is a mistake,
                     please contact us on{" "}
                     <a
-                      href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20have%20an%20issue%20with%20my%20payment."
+                      href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20GetTambola%20team!%20I%20have%20an%20issue%20with%20my%20payment."
                       target="_blank"
                       rel="noreferrer"
                       className="font-semibold text-gray-900 underline"
@@ -332,7 +332,7 @@ export default async function ConfirmationPage({
               href="/"
               className="block w-full rounded-lg border border-gray-200 bg-white py-3 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
             >
-              ← Back to starttambola.in
+              ← Back to gettambola.in
             </Link>
           </div>
 
@@ -357,7 +357,7 @@ export default async function ConfirmationPage({
           <p className="mt-8 text-center text-sm text-gray-500">
             Questions?{" "}
             <a
-              href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question."
+              href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20GetTambola%20team!%20I%20have%20a%20question."
               target="_blank"
               rel="noreferrer"
               className="font-medium text-red-600 underline underline-offset-2 hover:text-red-700"
@@ -371,7 +371,7 @@ export default async function ConfirmationPage({
 
       <footer className="border-t border-gray-200 bg-gray-50">
         <div className="mx-auto max-w-5xl px-6 py-6 text-center text-xs text-gray-400">
-          &copy; {new Date().getFullYear()} StartTambola. All rights reserved.
+          &copy; {new Date().getFullYear()} GetTambola. All rights reserved.
         </div>
       </footer>
     </div>

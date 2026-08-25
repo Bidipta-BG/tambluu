@@ -6,11 +6,11 @@ import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "How It Works", href: "/how-it-works" },
+  { label: "Demo", href: "/how-it-works" },
   { label: "Refund Policy", href: "/refund-policy" },
   { label: "Terms of Service", href: "/terms-of-service" },
   { label: "About Us", href: "/about" },
-  { label: "Contact Us", href: "https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question." },
+  { label: "Contact Us", href: "https://api.whatsapp.com/send?phone=919606914772&text=Hi%20GetTambola%20team!%20I%20have%20a%20question." },
 ];
 
 export default function NavBar() {
@@ -25,10 +25,10 @@ export default function NavBar() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2 z-50">
           <div className="flex h-8 w-8 items-center justify-center rounded bg-white text-lg font-bold text-black">
-            ST
+            GT
           </div>
           <span className="text-xl font-bold tracking-tight text-white">
-            StartTambola
+            GetTambola
           </span>
         </Link>
         
@@ -57,7 +57,7 @@ export default function NavBar() {
           {/* Simple Mode: Contact Us on the far right */}
           {isSimpleMode && (
             <a 
-              href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20StartTambola%20team!%20I%20have%20a%20question." 
+              href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20GetTambola%20team!%20I%20have%20a%20question." 
               target="_blank" 
               rel="noreferrer" 
               className="text-xs sm:text-sm font-medium transition-colors hover:text-white text-gray-300"

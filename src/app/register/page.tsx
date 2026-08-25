@@ -4,7 +4,7 @@ import RegisterForm from "@/components/RegisterForm";
 import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
-  title: "Registration Form — StartTambola",
+  title: "Registration Form — GetTambola",
   description: "Register to get your branded Tambola website.",
 };
 

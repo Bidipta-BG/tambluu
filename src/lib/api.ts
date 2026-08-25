@@ -29,10 +29,22 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, { ...init, headers });
 
   if (!response.ok) {
-    const text = await response.text().catch(() => "(no body)");
-    throw new Error(
-      `API error ${response.status} ${response.statusText} — ${url}: ${text}`,
-    );
+    // Try to parse the JSON error body for structured error information
+    let message = `Request failed with status ${response.status}`;
+    let code: string | undefined;
+    try {
+      const body = await response.json();
+      if (body?.error?.message) message = body.error.message;
+      if (body?.error?.code)    code    = body.error.code;
+    } catch {
+      // Fall back to raw text if JSON parsing fails
+      const text = await response.text().catch(() => "");
+      if (text) message = text;
+    }
+    const error = new Error(message) as Error & { statusCode: number; code?: string };
+    error.statusCode = response.status;
+    error.code = code;
+    throw error;
   }
 
   // Return parsed JSON, or undefined for 204 No Content.
@@ -193,6 +205,51 @@ export async function createTenant(
     plan: input.plan,
     createdAt: res.data.tenant.created_at,
   };
+}
+
+// ---------------------------------------------------------------------------
+// Availability check — called before createTenant to catch duplicates early
+// ---------------------------------------------------------------------------
+
+/** Input for the pre-flight duplicate check. */
+export interface AvailabilityCheckInput {
+  email: string;
+  phone: string;
+  domain: string;
+}
+
+/** Result of the pre-flight duplicate check. */
+export interface AvailabilityCheckResponse {
+  emailTaken: boolean;
+  phoneTaken: boolean;
+  domainTaken: boolean;
+}
+
+/**
+ * Checks if the given email, phone, and domain are already registered.
+ * Must be called BEFORE createTenant — returns per-field booleans so
+ * the UI can show inline errors on the exact field that conflicts.
+ */
+export async function checkAvailability(
+  input: AvailabilityCheckInput,
+): Promise<AvailabilityCheckResponse> {
+  const apiKey = process.env.NEXT_PUBLIC_INTERNAL_API_KEY;
+  if (!apiKey) {
+    throw new Error("NEXT_PUBLIC_INTERNAL_API_KEY is not configured");
+  }
+
+  const res = await apiFetch<{ data: AvailabilityCheckResponse }>(
+    "/internal/tenants/check-availability",
+    {
+      method: "POST",
+      headers: {
+        "x-internal-key": apiKey,
+      },
+      body: JSON.stringify(input),
+    },
+  );
+
+  return res.data;
 }
 
 /**

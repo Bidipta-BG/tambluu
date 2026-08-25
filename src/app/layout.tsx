@@ -13,25 +13,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://starttambola.in"),
+  metadataBase: new URL("https://gettambola.in"),
   title: {
-    default: "StartTambola — #1 Platform for Online Tambola Organizers",
-    template: "%s | StartTambola",
+    default: "GetTambola — #1 Platform for Online Tambola Organizers",
+    template: "%s | GetTambola",
   },
   description:
     "Get your own fully branded Tambola game website up and running in 24 hours. Sell tickets, manage agents, and announce winners automatically.",
-  keywords: ["StartTambola", "Online Tambola", "Tambola Game Organizer", "Housie Website Builder", "Tambola Ticket Booking"],
+  keywords: ["GetTambola", "Online Tambola", "Tambola Game Organizer", "Housie Website Builder", "Tambola Ticket Booking"],
   openGraph: {
-    title: "StartTambola — Run Your Own Tambola Game Like a Pro",
+    title: "GetTambola — Run Your Own Tambola Game Like a Pro",
     description: "Get your own fully branded Tambola game website up and running in 24 hours. No code, no hassle.",
-    url: "https://starttambola.in",
-    siteName: "StartTambola",
+    url: "https://gettambola.in",
+    siteName: "GetTambola",
     locale: "en_IN",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "StartTambola — Run Your Own Tambola Game",
+    title: "GetTambola — Run Your Own Tambola Game",
     description: "The ultimate platform for Tambola organizers to sell tickets and manage automated games.",
   },
 };

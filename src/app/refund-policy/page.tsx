@@ -3,8 +3,8 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Refund Policy — StartTambola",
-  description: "Read our refund policy for StartTambola services.",
+  title: "Refund Policy — GetTambola",
+  description: "Read our refund policy for GetTambola services.",
 };
 
 export default function RefundPolicyPage() {
@@ -18,7 +18,7 @@ export default function RefundPolicyPage() {
           </h1>
           
           <p className="text-gray-300 text-sm leading-relaxed mb-10">
-            At <strong className="text-white font-semibold">starttambola.in</strong>, we provide a self-service platform for creating your own Tambola hosting websites with custom .online domains. Please read our refund policy carefully before purchasing.
+            At <strong className="text-white font-semibold">gettambola.in</strong>, we provide a self-service platform for creating your own Tambola hosting websites with custom .online domains. Please read our refund policy carefully before purchasing.
           </p>
 
           <div className="space-y-10">

@@ -3,8 +3,8 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Service Policy — StartTambola",
-  description: "Read the terms of service and service policy for StartTambola.",
+  title: "Service Policy — GetTambola",
+  description: "Read the terms of service and service policy for GetTambola.",
 };
 
 export default function TermsOfServicePage() {
@@ -18,7 +18,7 @@ export default function TermsOfServicePage() {
           </h1>
           
           <p className="text-gray-300 text-sm leading-relaxed mb-10">
-            starttambola.in is a <strong className="text-white font-semibold">self-service platform</strong> designed for public use. It is <strong className="text-white font-semibold">not a custom or personal development agency</strong>. The platform provides the same service and features to all users equally, and does not cater to individual customization, deployment requests, or technical development.
+            gettambola.in is a <strong className="text-white font-semibold">self-service platform</strong> designed for public use. It is <strong className="text-white font-semibold">not a custom or personal development agency</strong>. The platform provides the same service and features to all users equally, and does not cater to individual customization, deployment requests, or technical development.
           </p>
 
           <div className="space-y-10">
@@ -39,7 +39,7 @@ export default function TermsOfServicePage() {
                 2. Equal and Shared Usage
               </h2>
               <p className="text-gray-300 text-sm leading-relaxed">
-                Every user accesses starttambola.in through the same backend systems. This shared model ensures fairness, but it also means that one user's experience is not technically separated from another. Issues that arise typically affect all users equally and cannot be attributed to specific user accounts or actions.
+                Every user accesses gettambola.in through the same backend systems. This shared model ensures fairness, but it also means that one user's experience is not technically separated from another. Issues that arise typically affect all users equally and cannot be attributed to specific user accounts or actions.
               </p>
             </section>
 
@@ -48,7 +48,7 @@ export default function TermsOfServicePage() {
                 3. Legal Responsibility and Misunderstanding
               </h2>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                <strong className="text-white font-semibold">Clients must not accuse or sue starttambola.in</strong> for hosting or performance-related incidents unless there is conclusive proof of intentional negligence. We emphasize that this platform is not a custom product tailored to individual needs. It is a generalized solution used by thousands.
+                <strong className="text-white font-semibold">Clients must not accuse or sue gettambola.in</strong> for hosting or performance-related incidents unless there is conclusive proof of intentional negligence. We emphasize that this platform is not a custom product tailored to individual needs. It is a generalized solution used by thousands.
               </p>
               <p className="text-gray-300 text-sm leading-relaxed">
                 Technological glitches like server crash, slow speed, or service halt are often momentary and should not be interpreted as targeted or malicious actions by our team.
@@ -69,7 +69,7 @@ export default function TermsOfServicePage() {
                 5. Misuse of the Generated Website
               </h2>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                Any website generated using starttambola.in must not be used for fraudulent, scam-related, or suspicious activities. If a website is found to be involved in such behavior, it will be <strong className="text-white font-semibold">permanently banned</strong>.
+                Any website generated using gettambola.in must not be used for fraudulent, scam-related, or suspicious activities. If a website is found to be involved in such behavior, it will be <strong className="text-white font-semibold">permanently banned</strong>.
               </p>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
                 The associated phone number and email address will be <strong className="text-white font-semibold">blacklisted</strong>, meaning that any future registrations using the same contact information will also be denied. This measure helps protect the integrity of the platform and the wider user base.

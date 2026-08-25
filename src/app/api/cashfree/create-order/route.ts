@@ -5,8 +5,8 @@ const API_VERSION = "2025-01-01";
 
 // Production amounts
 const PLAN_AMOUNTS: Record<string, number> = {
-  monthly: 4500,
-  yearly: 31200,
+  monthly: 1,
+  yearly: 25200,
 };
 
 /**
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
       {
         error:
           "CASHFREE_RETURN_URL_BASE is not configured or is not an https:// URL. " +
-          "Set it to your production domain (e.g. https://starttambola.in) in .env.local.",
+          "Set it to your production domain (e.g. https://gettambola.in) in .env.local.",
       },
       { status: 500 }
     );

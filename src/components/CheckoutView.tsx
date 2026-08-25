@@ -115,13 +115,13 @@ export default function CheckoutView({
 
           <div className="space-y-4 mb-8">
             <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10">
-              2,600₹/month
+              2,100₹/month
             </div>
             <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10">
-              Cost for 12 months: 31,200₹
+              Cost for 12 months: 25,200₹
             </div>
             <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10">
-              Total cost: 31,200₹
+              Total cost: 25,200₹
             </div>
           </div>
 

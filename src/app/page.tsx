@@ -9,7 +9,7 @@ import HeroCarousel from "@/components/HeroCarousel";
 // ─── Page metadata ────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
-  title: "StartTambola — Run Your Own Tambola Game Like a Pro",
+  title: "GetTambola — Run Your Own Tambola Game Like a Pro",
   description:
     "Get your own branded website, sell tickets, run games, manage agents and announce winners automatically. All in one simple platform.",
 };
@@ -151,7 +151,7 @@ function Hero() {
               href="/themes"
               className="w-full sm:w-auto rounded bg-accent px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-colors hover:bg-accent-hover"
             >
-              Start Your Tambola Website ↗
+              Get Your Tambola Website ↗
             </Link>
           </div>
           
@@ -204,7 +204,7 @@ function HowItWorks() {
         <div className="text-center mb-16">
           <span className="text-xs font-bold tracking-widest text-accent uppercase">Easy Steps</span>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            How StartTambola Works?
+            How GetTambola Works?
           </h2>
           <p className="mt-4 text-gray-600">Get started in just a few simple steps</p>
         </div>
@@ -246,8 +246,7 @@ function Themes() {
             Professional Themes for Your Website
           </h2>
         </div>
-        
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
           {THEMES.map((theme) => (
             <div key={theme.id} className="overflow-hidden rounded-xl border border-gray-200 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-md">
               <div className="relative aspect-[9/16] w-full bg-gray-900">
@@ -264,12 +263,6 @@ function Themes() {
               </div>
             </div>
           ))}
-        </div>
-        
-        <div className="mt-12 text-center">
-          <button className="rounded border border-gray-300 bg-white px-8 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50">
-            View All Themes
-          </button>
         </div>
       </div>
     </section>
@@ -310,11 +303,11 @@ function Pricing() {
             {/* Yearly Card */}
             <div className="flex-1 rounded-2xl bg-white p-8 text-gray-900 shadow-lg relative border-2 border-accent">
               <span className="absolute -top-3 right-6 rounded-full bg-accent px-3 py-1 text-xs font-bold text-white">
-                Save 42%
+                Save 53%
               </span>
               <h3 className="text-lg font-bold">Yearly Plan</h3>
               <div className="mt-4 flex items-end gap-1">
-                <span className="text-4xl font-bold tracking-tight">₹31,200</span>
+                <span className="text-4xl font-bold tracking-tight">₹25,200</span>
                 <span className="mb-1 text-sm text-gray-500">/year</span>
               </div>
               <p className="mt-2 text-sm text-gray-500">Billed yearly</p>
@@ -508,7 +501,7 @@ export default function HomePage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "StartTambola",
+    "name": "GetTambola",
     "operatingSystem": "Web",
     "applicationCategory": "GameApplication",
     "offers": {
@@ -516,8 +509,8 @@ export default function HomePage() {
       "price": "4500",
       "priceCurrency": "INR"
     },
-    "description": "StartTambola is the ultimate platform for Tambola organizers to launch their own branded website, sell tickets, and run automated games.",
-    "url": "https://starttambola.in"
+    "description": "GetTambola is the ultimate platform for Tambola organizers to launch their own branded website, sell tickets, and run automated games.",
+    "url": "https://gettambola.in"
   };
 
   return (

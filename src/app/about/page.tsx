@@ -4,8 +4,8 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About Us — StartTambola",
-  description: "Learn more about XOM Digital Web designer and the team behind StartTambola.",
+  title: "About Us — GetTambola",
+  description: "Learn more about XOM Digital Web designer and the team behind GetTambola.",
 };
 
 export default function AboutPage() {
@@ -72,7 +72,7 @@ export default function AboutPage() {
                 Service Scope
               </h2>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                starttambola.in operates as a web design and development service. Our primary focus is providing beautifully designed websites through our collection of professionally designed themes and web technologies.
+                gettambola.in operates as a web design and development service. Our primary focus is providing beautifully designed websites through our collection of professionally designed themes and web technologies.
               </p>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
                 We provide website design, development, deployment, maintenance, and related technical services. We do not provide payment processing, wallet services, betting, gambling services, prize distribution, or any form of monetary transaction facility.
