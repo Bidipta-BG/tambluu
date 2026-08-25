@@ -5,7 +5,7 @@ const API_VERSION = "2025-01-01";
 
 // Production amounts
 const PLAN_AMOUNTS: Record<string, number> = {
-  monthly: 1,
+  monthly: 4500,
   yearly: 25200,
 };
 
