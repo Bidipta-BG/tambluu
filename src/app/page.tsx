@@ -149,10 +149,18 @@ function Hero() {
           <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start mb-10">
             <Link
               href="/themes"
-              className="w-full sm:w-auto rounded bg-accent px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-colors hover:bg-accent-hover"
+              className="flex items-center justify-center w-full sm:w-auto rounded bg-accent px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-colors hover:bg-accent-hover"
             >
-              Get Your Tambola Website ↗
+              Get Started
             </Link>
+            <a
+              href="https://api.whatsapp.com/send?phone=919606914772&text=Hi%20GetTambola%20team!%20I%20have%20a%20question."
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-center w-full sm:w-auto rounded bg-[#25D366] px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-colors hover:bg-[#128C7E]"
+            >
+              WhatsApp now
+            </a>
           </div>
           
 

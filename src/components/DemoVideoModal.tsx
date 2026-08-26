@@ -1,6 +1,6 @@
 export default function DemoVideoModal() {
   // Replace this with your actual YouTube video link
-  const youtubeUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  const youtubeUrl = "https://www.youtube.com/watch?v=fPBJhROWLM4";
 
   return (
     <div className="flex justify-center mt-8 mb-4">
