@@ -5,7 +5,7 @@ import DividendList from "@/components/DividendList";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import HeroCarousel from "@/components/HeroCarousel";
-import LaunchOfferModal from "@/components/LaunchOfferModal";
+import LaunchOfferModalWrapper from "@/components/LaunchOfferModalWrapper";
 import SocialProofStrip from "@/components/SocialProofStrip";
 
 // ─── Page metadata ────────────────────────────────────────────────────────────
@@ -123,9 +123,9 @@ const FAQS = [
 ];
 
 const LIVE_GAMES = [
-  { label: "Sharma Ji Ki Tambola", url: "https://demo1.gettambola.in" },
-  { label: "Patel Family Housie", url: "https://demo2.gettambola.in" },
-  { label: "Friday Night Tambola", url: "https://demo3.gettambola.in" },
+  { label: "Ziro Tambola", url: "https://zirotambola.online" },
+  { label: "Itanagar Tambola", url: "https://itanagartambola.online" },
+  { label: "Nagaon Online Tambola", url: "https://nagaonlinetambola.online" },
 ];
 
 // ─── Components ───────────────────────────────────────────────────────────────
@@ -544,7 +544,7 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <LaunchOfferModal />
+      <LaunchOfferModalWrapper />
       <NavBar />
       <main className="flex-1">
         <Hero />
