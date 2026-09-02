@@ -29,22 +29,30 @@ function validate(fields: FormFields): FieldErrors {
   
   if (!fields.email.trim()) {
     errors.email = "Email is required.";
+  } else if (/\s/.test(fields.email)) {
+    errors.email = "Email cannot contain spaces.";
   } else if (!EMAIL_RE.test(fields.email.trim())) {
     errors.email = "Please enter a valid email address.";
   }
   
   if (!fields.phone.trim()) {
     errors.phone = "Phone number is required.";
+  } else if (/\s/.test(fields.phone)) {
+    errors.phone = "Phone number cannot contain spaces.";
   } else if (!PHONE_RE.test(fields.phone.replace(/\D/g, ''))) {
     errors.phone = "Phone number must be exactly 10 digits.";
   }
   
   if (!fields.websiteName.trim()) {
     errors.websiteName = "Website name is required.";
+  } else if (/\s/.test(fields.websiteName)) {
+    errors.websiteName = "Website name cannot contain spaces.";
   }
   
   if (!fields.password) {
     errors.password = "Password is required.";
+  } else if (/\s/.test(fields.password)) {
+    errors.password = "Password cannot contain spaces.";
   } else if (!PASSWORD_RE.test(fields.password)) {
     errors.password = "Password must be at least 8 characters and contain letters, numbers, and special characters (e.g. @, #).";
   }
@@ -242,7 +250,7 @@ export default function RegisterForm() {
           <input
             type="email"
             value={fields.email}
-            onChange={(e) => set("email", e.target.value)}
+            onChange={(e) => set("email", e.target.value.replace(/\s/g, ""))}
             className="w-full px-4 py-3 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-accent font-medium"
           />
           {errors.email && <p className="text-red-400 text-xs mt-1.5 font-medium">{errors.email}</p>}
@@ -253,7 +261,7 @@ export default function RegisterForm() {
           <input
             type="tel"
             value={fields.phone}
-            onChange={(e) => set("phone", e.target.value)}
+            onChange={(e) => set("phone", e.target.value.replace(/\s/g, ""))}
             className="w-full px-4 py-3 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-accent font-medium"
             placeholder="10 digit number"
           />
@@ -266,7 +274,7 @@ export default function RegisterForm() {
             <input
               type="text"
               value={fields.websiteName}
-              onChange={(e) => set("websiteName", e.target.value.replace(/\.online$/i, ''))}
+              onChange={(e) => set("websiteName", e.target.value.replace(/\s/g, "").replace(/\.online$/i, ''))}
               className="flex-1 min-w-0 px-3 sm:px-4 py-3 bg-transparent text-black outline-none font-medium"
               placeholder="mytambola"
             />
@@ -286,7 +294,7 @@ export default function RegisterForm() {
             <input
               type={showPassword ? "text" : "password"}
               value={fields.password}
-              onChange={(e) => set("password", e.target.value)}
+              onChange={(e) => set("password", e.target.value.replace(/\s/g, ""))}
               className="w-full pl-4 pr-12 py-3 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-accent font-medium"
               placeholder="Letters, numbers, special characters"
             />
@@ -317,7 +325,7 @@ export default function RegisterForm() {
             <input
               type={showConfirmPassword ? "text" : "password"}
               value={fields.confirmPassword}
-              onChange={(e) => set("confirmPassword", e.target.value)}
+              onChange={(e) => set("confirmPassword", e.target.value.replace(/\s/g, ""))}
               className="w-full pl-4 pr-12 py-3 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-accent font-medium"
               placeholder="Re-enter your admin password"
             />

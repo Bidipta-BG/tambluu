@@ -83,19 +83,31 @@ export default function CheckoutView({
 
       <div className="grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
         {/* Monthly Card */}
-        <div className="flex flex-col rounded-xl bg-white/5 border border-white/5 p-6 shadow-2xl">
+        <div className="flex flex-col rounded-xl bg-white/5 border border-white/5 p-6 shadow-2xl relative">
+          {/* Offer badge */}
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#ff5e3a] px-4 py-1 text-xs font-bold text-white">
+            🔥 New Launch Offer
+          </span>
+
           <h3 className="text-center text-xl font-bold text-[#ff9d4a] mb-6">Monthly basis</h3>
 
           <div className="space-y-4 mb-8">
-            <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10">
-              4,500₹/month
+            {/* Price row: struck-through original + discounted */}
+            <div className="w-full rounded bg-white/5 px-4 py-3 border border-white/10 flex items-center justify-between">
+              <span className="text-sm text-gray-500 line-through">4,500₹/month</span>
+              <span className="text-base font-bold text-[#ff9d4a]">3,600₹/month</span>
             </div>
-            <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10">
-              Cost for 1 month: 4,500₹
+            <div className="w-full rounded bg-white/5 px-4 py-3 border border-white/10 flex items-center justify-between">
+              <span className="text-sm text-gray-500 line-through">Cost for 1 month: 4,500₹</span>
+              <span className="text-sm font-semibold text-[#ff9d4a]">3,600₹</span>
             </div>
-            <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10">
-              Total cost: 4,500₹
+            <div className="w-full rounded bg-white/5 px-4 py-3 border border-white/10 flex items-center justify-between">
+              <span className="text-sm text-gray-500 line-through">Total cost: 4,500₹</span>
+              <span className="text-sm font-semibold text-[#ff9d4a]">3,600₹</span>
             </div>
+            <p className="text-center text-xs text-gray-500 italic">
+              First month only · Renews at ₹4,500/month
+            </p>
           </div>
 
           <div className="mt-auto">

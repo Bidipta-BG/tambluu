@@ -5,6 +5,8 @@ import DividendList from "@/components/DividendList";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import HeroCarousel from "@/components/HeroCarousel";
+import LaunchOfferModal from "@/components/LaunchOfferModal";
+import SocialProofStrip from "@/components/SocialProofStrip";
 
 // ─── Page metadata ────────────────────────────────────────────────────────────
 
@@ -118,6 +120,12 @@ const FAQS = [
   { q: "Do you collect ticket money from players?", a: "No, ticket money goes directly to you or your agents. We only charge the subscription fee." },
   { q: "Can I have agents to sell tickets?", a: "Yes, our agent management system allows you to create agents and track their sales." },
   { q: "What happens after payment?", a: "Your website is set up within 24 hours, and you will receive your admin, player, and agent links." },
+];
+
+const LIVE_GAMES = [
+  { label: "Sharma Ji Ki Tambola", url: "https://demo1.gettambola.in" },
+  { label: "Patel Family Housie", url: "https://demo2.gettambola.in" },
+  { label: "Friday Night Tambola", url: "https://demo3.gettambola.in" },
 ];
 
 // ─── Components ───────────────────────────────────────────────────────────────
@@ -293,18 +301,27 @@ function Pricing() {
           
           <div className="flex-1 flex flex-col sm:flex-row gap-6 w-full">
             {/* Monthly Card */}
-            <div className="flex-1 rounded-2xl bg-white p-8 text-gray-900 shadow-lg">
+            <div className="flex-1 rounded-2xl bg-white p-8 text-gray-900 shadow-lg relative border-2 border-accent">
+              <span className="absolute -top-3 left-6 rounded-full bg-accent px-3 py-1 text-xs font-bold text-white">
+                🔥 New Launch
+              </span>
               <h3 className="text-lg font-bold">Monthly Plan</h3>
-              <div className="mt-4 flex items-end gap-1">
-                <span className="text-4xl font-bold tracking-tight">₹4,500</span>
-                <span className="mb-1 text-sm text-gray-500">/month</span>
+              <div className="mt-4">
+                <div className="flex items-end gap-2">
+                  <span className="text-4xl font-bold tracking-tight text-accent">₹3,600</span>
+                  <span className="mb-1 text-sm text-gray-500">/first month</span>
+                </div>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-sm text-gray-400 line-through">₹4,500</span>
+                  <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Save 20%</span>
+                </div>
               </div>
-              <p className="mt-2 text-sm text-gray-500">Billed monthly</p>
+              <p className="mt-2 text-sm text-gray-500">Renews at ₹4,500/month · Limited time offer</p>
               <Link
-                href="/themes?plan=monthly"
-                className="mt-8 block w-full rounded border border-gray-300 py-3 text-center text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
+                href="/themes?plan=monthly&offer=launch"
+                className="mt-8 block w-full rounded border border-accent py-3 text-center text-sm font-semibold text-accent transition-colors hover:bg-red-50"
               >
-                View Details
+                Claim Offer
               </Link>
             </div>
             
@@ -527,9 +544,11 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <LaunchOfferModal />
       <NavBar />
       <main className="flex-1">
         <Hero />
+        <SocialProofStrip games={LIVE_GAMES} />
         <FeatureList />
         <DividendList />
         <HowItWorks />
