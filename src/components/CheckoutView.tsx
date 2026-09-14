@@ -48,10 +48,19 @@ export default function CheckoutView({
         if (!cashfree) {
           throw new Error("Cashfree SDK failed to load");
         }
-        await cashfree.checkout({
+        const result = await cashfree.checkout({
           paymentSessionId: orderData.paymentSessionId,
           redirectTarget: "_modal",
         });
+
+        if (result?.error) {
+          setError(result.error.message || "Payment was cancelled or failed.");
+          setProcessingPlan(null);
+          return;
+        }
+
+        // Cashfree modal closed successfully. Manually redirect to verify page.
+        router.push(`/register/confirmation?order_id=${encodeURIComponent(orderData.orderId)}&tenantId=${encodeURIComponent(tenantId)}&phone=${encodeURIComponent(ownerPhone)}`);
       } catch (err) {
         setError(
           err instanceof Error
