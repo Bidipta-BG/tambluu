@@ -32,7 +32,7 @@ export default async function CheckoutPage({
               ownerName={typeof ownerName === "string" ? ownerName : ""}
               ownerEmail={typeof ownerEmail === "string" ? ownerEmail : ""}
               ownerPhone={typeof ownerPhone === "string" ? ownerPhone : ""}
-              plan={(plan === "monthly" ? "monthly" : "yearly") as "monthly" | "yearly"}
+              defaultPlan={(plan === "monthly" ? "monthly" : "yearly") as "monthly" | "yearly"}
               referralCode={typeof referralCode === "string" ? referralCode : undefined}
             />
           </Suspense>
