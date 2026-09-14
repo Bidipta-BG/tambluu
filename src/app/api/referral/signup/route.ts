@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       let errorMsg = `Backend returned ${res.status}`;
       try {
         const errorData = JSON.parse(text);
-        errorMsg = errorData.error ?? errorData.message ?? errorMsg;
+        errorMsg = errorData.error?.message ?? errorData.error ?? errorData.message ?? errorMsg;
       } catch (e) {
         if (res.status === 404) {
           errorMsg = "Backend endpoint POST /referrers not implemented yet (404).";
