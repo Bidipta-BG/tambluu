@@ -1,20 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { PRICING } from "@/lib/pricing";
+
 const CASHFREE_BASE_URL = "https://api.cashfree.com/pg";
 const API_VERSION = "2025-01-01";
-
-// Production amounts
-const PLAN_AMOUNTS: Record<string, number> = {
-  monthly: 3600,
-  yearly: 25200,
-};
 
 /**
  * POST /api/cashfree/create-order
  *
  * Creates a Cashfree order server-side (secret key never exposed to the browser).
  *
- * Body: { tenantId, plan, ownerName, ownerEmail, ownerPhone }
+ * Body: { tenantId, plan, ownerName, ownerEmail, ownerPhone, referralCode? }
  * Returns: { paymentSessionId, orderId }
  */
 export async function POST(request: NextRequest) {
@@ -34,6 +30,7 @@ export async function POST(request: NextRequest) {
     ownerName?: string;
     ownerEmail?: string;
     ownerPhone?: string;
+    referralCode?: string;
   };
 
   try {
@@ -42,7 +39,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { tenantId, plan, ownerName, ownerEmail, ownerPhone } = body;
+  const { tenantId, plan, ownerName, ownerEmail, ownerPhone, referralCode } = body;
 
   if (!tenantId || !plan || !ownerName || !ownerEmail || !ownerPhone) {
     return NextResponse.json(
@@ -51,8 +48,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const orderAmount = PLAN_AMOUNTS[plan];
-  if (!orderAmount) {
+  let orderAmount = 0;
+  if (plan === "monthly") {
+    orderAmount = referralCode ? PRICING.monthlyReferral : PRICING.monthlyLaunch;
+  } else if (plan === "yearly") {
+    orderAmount = PRICING.yearlyTotal;
+  } else {
     return NextResponse.json(
       { error: `Unknown plan: ${plan}. Must be "monthly" or "yearly".` },
       { status: 400 }
@@ -80,9 +81,11 @@ export async function POST(request: NextRequest) {
     `?order_id={order_id}` +
     `&tenantId=${encodeURIComponent(tenantId)}` +
     `&phone=${encodeURIComponent(ownerPhone)}`;
+  
 
   const cashfreePayload = {
-    order_amount: orderAmount,
+    // order_amount: orderAmount,
+    order_amount: 1,
     order_currency: "INR",
     customer_details: {
       customer_id: tenantId,

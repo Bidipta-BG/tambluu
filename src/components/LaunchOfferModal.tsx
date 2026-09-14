@@ -57,7 +57,7 @@ export default function LaunchOfferModal() {
             <span className="text-lg font-semibold text-gray-400 line-through">
               ₹4,500
             </span>
-            <span className="text-4xl font-bold text-accent">₹3,600</span>
+            <span className="text-4xl font-bold text-accent">₹3,900</span>
             <span className="text-xs text-gray-500 self-end mb-1">/month</span>
           </div>
           <p className="text-center text-xs text-gray-400 mb-4 italic">

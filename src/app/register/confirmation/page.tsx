@@ -205,6 +205,22 @@ export default async function ConfirmationPage({
     ? await verifyPayment(order_id)
     : { isPaid: false, cfPaymentId: null };
 
+  // Notify backend of payment success for referral attribution
+  if (isPaid && tenantId) {
+    const apiKey = process.env.NEXT_PUBLIC_INTERNAL_API_KEY;
+    if (apiKey) {
+      // Fire-and-forget to avoid blocking the UI
+      fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/internal/referrals/confirm`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-internal-key": apiKey,
+        },
+        body: JSON.stringify({ tenantId, orderId: order_id }),
+      }).catch(err => console.error("Failed to notify backend of referral success:", err));
+    }
+  }
+
   // Mask all but the last 4 digits of the phone number for display.
   // e.g. "9876543210" → "••••••3210"
   const maskedPhone = phone

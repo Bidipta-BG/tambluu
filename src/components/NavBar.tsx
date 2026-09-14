@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { label: "Refund Policy", href: "/refund-policy" },
   { label: "Terms of Service", href: "/terms-of-service" },
   { label: "About Us", href: "/about" },
+  { label: "Refer & Earn", href: "/refer" },
   { label: "Contact Us", href: "https://api.whatsapp.com/send?phone=919606914772&text=Hi%20GetTambola%20team!%20I%20have%20a%20question." },
 ];
 
@@ -17,7 +18,7 @@ export default function NavBar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const isSimpleMode = pathname.startsWith('/themes') || pathname.startsWith('/register');
+  const isSimpleMode = pathname.startsWith('/themes') || pathname.startsWith('/register') || pathname === '/refer/dashboard';
   const visibleLinks = NAV_LINKS.filter(link => !isSimpleMode || link.label === 'Contact Us');
 
   return (

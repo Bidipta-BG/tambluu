@@ -5,13 +5,16 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createCashfreeOrder } from "@/lib/api";
 import type { Plan } from "@/lib/api";
+import { PRICING } from "@/lib/pricing";
+import { load } from "@cashfreepayments/cashfree-js";
 
 interface CheckoutViewProps {
   tenantId: string;
   ownerName: string;
   ownerEmail: string;
   ownerPhone: string;
-  plan: Plan;
+  defaultPlan: Plan;
+  referralCode?: string;
 }
 
 export default function CheckoutView({
@@ -19,7 +22,8 @@ export default function CheckoutView({
   ownerName,
   ownerEmail,
   ownerPhone,
-  plan: initialPlan,
+  defaultPlan,
+  referralCode,
 }: CheckoutViewProps) {
   const router = useRouter();
   const [processingPlan, setProcessingPlan] = useState<Plan | null>(null);
@@ -31,47 +35,36 @@ export default function CheckoutView({
       setError(null);
 
       try {
-        // Step 1: Create Cashfree order via server-side Route Handler.
-        const { paymentSessionId, orderId } = await createCashfreeOrder({
+        const orderData = await createCashfreeOrder({
           tenantId,
           plan: selectedPlan,
           ownerName,
           ownerEmail,
           ownerPhone,
+          referralCode,
         });
 
-        // Step 2: Dynamically load the Cashfree JS SDK (browser-only, loaded on demand).
-        const { load } = await import("@cashfreepayments/cashfree-js");
         const cashfree = await load({ mode: "production" });
-
         if (!cashfree) {
-          throw new Error(
-            "Cashfree SDK failed to load. Please check your internet connection and try again.",
-          );
+          throw new Error("Cashfree SDK failed to load");
         }
-
-        // Step 3: Open the Cashfree checkout in a modal popup.
-        // In _modal mode, cashfree does NOT auto-redirect to return_url.
-        // The promise resolves when the modal closes (after payment or dismissal).
         await cashfree.checkout({
-          paymentSessionId,
+          paymentSessionId: orderData.paymentSessionId,
           redirectTarget: "_modal",
         });
-
-        // Step 4: Modal closed — redirect to confirmation page for server-side verification.
-        const params = new URLSearchParams({
-          order_id: orderId,
-          tenantId,
-          phone: ownerPhone,
-        });
-        router.push(`/register/confirmation?${params.toString()}`);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Failed to initiate payment. Please try again.",
+        );
         setProcessingPlan(null);
       }
     },
-    [tenantId, ownerName, ownerEmail, ownerPhone, router],
+    [tenantId, ownerName, ownerEmail, ownerPhone, referralCode],
   );
+
+  const monthlyPrice = referralCode ? PRICING.monthlyReferral : PRICING.monthlyLaunch;
 
   return (
     <div className="flex flex-col items-center">
@@ -84,7 +77,6 @@ export default function CheckoutView({
       <div className="grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
         {/* Monthly Card */}
         <div className="flex flex-col rounded-xl bg-white/5 border border-white/5 p-6 shadow-2xl relative">
-          {/* Offer badge */}
           <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#ff5e3a] px-4 py-1 text-xs font-bold text-white">
             🔥 New Launch Offer
           </span>
@@ -92,21 +84,24 @@ export default function CheckoutView({
           <h3 className="text-center text-xl font-bold text-[#ff9d4a] mb-6">Monthly basis</h3>
 
           <div className="space-y-4 mb-8">
-            {/* Price row: struck-through original + discounted */}
             <div className="w-full rounded bg-white/5 px-4 py-3 border border-white/10 flex items-center justify-between">
-              <span className="text-sm text-gray-500 line-through">4,500₹/month</span>
-              <span className="text-base font-bold text-[#ff9d4a]">3,600₹/month</span>
+              <span className="text-sm text-gray-500 line-through">₹{PRICING.monthlyRegular.toLocaleString()}/month</span>
+              <span className="text-base font-bold text-[#ff9d4a]">₹{monthlyPrice.toLocaleString()}/month</span>
             </div>
+            
+            {referralCode && (
+              <div className="w-full rounded bg-green-500/10 px-4 py-3 border border-green-500/20 flex flex-col items-center justify-center">
+                <span className="text-sm font-semibold text-green-400">🏷️ Referral applied: -₹{PRICING.referralDiscount}</span>
+              </div>
+            )}
+            
             <div className="w-full rounded bg-white/5 px-4 py-3 border border-white/10 flex items-center justify-between">
-              <span className="text-sm text-gray-500 line-through">Cost for 1 month: 4,500₹</span>
-              <span className="text-sm font-semibold text-[#ff9d4a]">3,600₹</span>
+              <span className="text-sm text-gray-500">Total cost for first month:</span>
+              <span className="text-sm font-semibold text-[#ff9d4a]">₹{monthlyPrice.toLocaleString()}</span>
             </div>
-            <div className="w-full rounded bg-white/5 px-4 py-3 border border-white/10 flex items-center justify-between">
-              <span className="text-sm text-gray-500 line-through">Total cost: 4,500₹</span>
-              <span className="text-sm font-semibold text-[#ff9d4a]">3,600₹</span>
-            </div>
+            
             <p className="text-center text-xs text-gray-500 italic">
-              First month only · Renews at ₹4,500/month
+              Renews at ₹{PRICING.monthlyRegular.toLocaleString()}/month thereafter
             </p>
           </div>
 
@@ -126,14 +121,17 @@ export default function CheckoutView({
           <h3 className="text-center text-xl font-bold text-[#ff9d4a] mb-6">Yearly basis</h3>
 
           <div className="space-y-4 mb-8">
-            <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10">
-              2,100₹/month
+            <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10 flex justify-between">
+              <span>Monthly equivalent</span>
+              <span>₹{PRICING.yearlyMonthly.toLocaleString()}/month</span>
             </div>
-            <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10">
-              Cost for 12 months: 25,200₹
+            <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10 flex justify-between">
+              <span>Cost for 12 months</span>
+              <span>₹{PRICING.yearlyTotal.toLocaleString()}</span>
             </div>
-            <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10">
-              Total cost: 25,200₹
+            <div className="w-full rounded bg-white/5 px-4 py-3 text-sm text-gray-300 border border-white/10 flex justify-between font-semibold">
+              <span>Total cost</span>
+              <span className="text-[#ff9d4a]">₹{PRICING.yearlyTotal.toLocaleString()}</span>
             </div>
           </div>
 

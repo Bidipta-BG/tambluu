@@ -83,6 +83,8 @@ export interface CreateTenantInput {
   password: string;
   /** Selected theme ID. */
   themeId?: string;
+  /** Optional referral code applied during signup. */
+  referralCode?: string;
 }
 
 /** Server response after a tenant is successfully created. */
@@ -102,6 +104,7 @@ export interface CreateCashfreeOrderInput {
   ownerName: string;
   ownerEmail: string;
   ownerPhone: string;
+  referralCode?: string;
 }
 
 /** Response from the create-order Route Handler. */
@@ -194,6 +197,7 @@ export async function createTenant(
       ownerPassword: input.password,
       plan: input.plan,
       themeId: input.themeId,
+      referralCode: input.referralCode,
     }),
   });
 

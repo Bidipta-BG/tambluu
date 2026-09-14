@@ -19,8 +19,8 @@ type FieldErrors = Partial<Record<keyof FormFields, string>>;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^\d{10}$/; // 10 digits
-const PASSWORD_RE = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/; 
-// at least one letter, one number, one special character, min 8 chars.
+const PASSWORD_RE = /^.{4,}$/; 
+// at least 4 characters.
 
 function validate(fields: FormFields): FieldErrors {
   const errors: FieldErrors = {};
@@ -54,7 +54,7 @@ function validate(fields: FormFields): FieldErrors {
   } else if (/\s/.test(fields.password)) {
     errors.password = "Password cannot contain spaces.";
   } else if (!PASSWORD_RE.test(fields.password)) {
-    errors.password = "Password must be at least 8 characters and contain letters, numbers, and special characters (e.g. @, #).";
+    errors.password = "Password must be at least 4 characters long.";
   }
 
   if (!fields.confirmPassword) {
@@ -94,6 +94,61 @@ export default function RegisterForm() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // ── Referral System ──
+  const [referralCode, setReferralCode] = useState("");
+  const [referralStatus, setReferralStatus] = useState<"idle" | "validating" | "valid" | "invalid">("idle");
+  const [referralMessage, setReferralMessage] = useState("");
+
+  useEffect(() => {
+    let initialRef = searchParams.get("ref");
+    if (!initialRef) {
+      initialRef = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("gt_ref="))
+        ?.split("=")?.[1] ?? "";
+    }
+    if (initialRef) {
+      setReferralCode(initialRef);
+      validateReferralCode(initialRef);
+    }
+  }, [searchParams]);
+
+  async function validateReferralCode(code: string) {
+    if (!code) {
+      setReferralStatus("idle");
+      setReferralMessage("");
+      return;
+    }
+    setReferralStatus("validating");
+    try {
+      const res = await fetch(`/api/referral/validate?code=${encodeURIComponent(code)}`);
+      const data = await res.json();
+      if (data.valid) {
+        setReferralStatus("valid");
+        setReferralMessage("Code applied! You save ₹300 on your first month.");
+      } else {
+        setReferralStatus("invalid");
+        setReferralMessage("Invalid referral code.");
+      }
+    } catch {
+      setReferralStatus("invalid");
+      setReferralMessage("Error validating code.");
+    }
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (referralCode && referralStatus !== "validating") {
+        // Only validate if it's not already valid to avoid infinite loop on mount
+        // We'll let the user typing trigger this
+        if (referralCode.length >= 6) {
+           validateReferralCode(referralCode);
+        }
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [referralCode]);
 
   function set<K extends keyof FormFields>(key: K, value: FormFields[K]) {
     setFields((prev) => ({ ...prev, [key]: value }));
@@ -188,6 +243,7 @@ export default function RegisterForm() {
         plan: plan,
         password: fields.password,
         themeId: fields.themeId,
+        referralCode: referralStatus === "valid" ? referralCode : undefined,
       });
 
       const query = new URLSearchParams(searchParams.toString());
@@ -195,6 +251,9 @@ export default function RegisterForm() {
       query.set("ownerName", fields.name.trim());
       query.set("ownerEmail", fields.email.trim());
       query.set("ownerPhone", fields.phone.trim());
+      if (referralStatus === "valid" && referralCode) {
+        query.set("referralCode", referralCode);
+      }
       router.push(`/register/checkout?${query.toString()}`);
     } catch (err) {
       // Check if this is a 409 CONFLICT from the backend (duplicate field)
@@ -353,6 +412,55 @@ export default function RegisterForm() {
             <p className="text-xs text-gray-300 leading-relaxed">
               <span className="font-bold text-[#ff9d4a]">Important Note:</span> Remember your admin login password. This cannot be recovered if you forget it. Once logged into the admin panel, you can change your password.
             </p>
+          </div>
+        </div>
+
+        {/* ── Referral Section ── */}
+        {/* ── Referral Section ── */}
+        <div className="pt-2">
+          <div className="bg-black/20 p-5 rounded-lg border border-[#ff9d4a]/30 space-y-3">
+            <label className="block text-white text-sm font-bold flex items-center justify-between gap-2">
+              <span>🏷️ Referral Code (Optional)</span>
+              <span className="text-xs text-[#ff9d4a] font-normal">Get ₹300 off on monthly purchase</span>
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                value={referralCode}
+                onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                placeholder="e.g. GT-R7K29P"
+                className="w-full px-4 py-3 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-accent font-mono font-bold"
+              />
+              <div className="absolute right-3 top-2.5 flex items-center gap-2">
+                {referralStatus === "validating" && (
+                  <span className="text-gray-400 text-sm animate-pulse font-medium">Checking...</span>
+                )}
+                {referralCode.length > 0 && referralStatus !== "validating" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setReferralCode("");
+                      setReferralStatus("idle");
+                      setReferralMessage("");
+                    }}
+                    className="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-2.5 py-1.5 rounded transition-colors"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            </div>
+            
+            {referralStatus === "valid" && (
+              <div className="text-green-400 text-sm font-medium flex items-center gap-1.5">
+                ✅ {referralMessage}
+              </div>
+            )}
+            {referralStatus === "invalid" && referralCode.length > 0 && (
+              <div className="text-red-400 text-sm font-medium flex items-center gap-1.5">
+                ❌ {referralMessage}
+              </div>
+            )}
           </div>
         </div>
 
