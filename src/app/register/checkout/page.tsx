@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import NavBar from "@/components/NavBar";
 import CheckoutView from "@/components/CheckoutView";
+
+export const metadata: Metadata = {
+  title: "Pricing & Checkout — GetTambola",
+  description: "Select your subscription plan and complete your payment.",
+};
 
 export default async function CheckoutPage({
   searchParams,
@@ -12,12 +18,11 @@ export default async function CheckoutPage({
     ownerEmail?: string;
     ownerPhone?: string;
     plan?: string;
-    referralCode?: string;
   }>;
 }) {
-  const { tenantId, ownerName, ownerEmail, ownerPhone, plan, referralCode } = await searchParams;
+  const { tenantId, ownerName, ownerEmail, ownerPhone, plan } = await searchParams;
 
-  if (!tenantId || typeof tenantId !== "string") {
+  if (!tenantId) {
     redirect("/register");
   }
 
@@ -29,11 +34,10 @@ export default async function CheckoutPage({
           <Suspense fallback={<div className="h-96" />}>
             <CheckoutView
               tenantId={tenantId}
-              ownerName={typeof ownerName === "string" ? ownerName : ""}
-              ownerEmail={typeof ownerEmail === "string" ? ownerEmail : ""}
-              ownerPhone={typeof ownerPhone === "string" ? ownerPhone : ""}
-              defaultPlan={(plan === "monthly" ? "monthly" : "yearly") as "monthly" | "yearly"}
-              referralCode={typeof referralCode === "string" ? referralCode : undefined}
+              ownerName={ownerName ?? ""}
+              ownerEmail={ownerEmail ?? ""}
+              ownerPhone={ownerPhone ?? ""}
+              plan={(plan === "monthly" ? "monthly" : "yearly") as "monthly" | "yearly"}
             />
           </Suspense>
         </div>

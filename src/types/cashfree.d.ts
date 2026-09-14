@@ -25,8 +25,9 @@ declare module "@cashfreepayments/cashfree-js" {
   export interface CashfreeInstance {
     /**
      * Opens the Cashfree hosted checkout.
+     * Returns a Promise that resolves when the modal is closed.
      */
-    checkout(options: CashfreeCheckoutOptions): Promise<any>;
+    checkout(options: CashfreeCheckoutOptions): Promise<void>;
   }
 
   export interface LoadOptions {

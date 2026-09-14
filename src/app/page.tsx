@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { PRICING } from "@/lib/pricing";
 import DividendList from "@/components/DividendList";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
@@ -309,12 +308,12 @@ function Pricing() {
               <h3 className="text-lg font-bold">Monthly Plan</h3>
               <div className="mt-4">
                 <div className="flex items-end gap-2">
-                  <span className="text-4xl font-bold tracking-tight text-accent">₹{PRICING.monthlyLaunch.toLocaleString()}</span>
+                  <span className="text-4xl font-bold tracking-tight text-accent">₹3,600</span>
                   <span className="mb-1 text-sm text-gray-500">/first month</span>
                 </div>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-sm text-gray-400 line-through">₹{PRICING.monthlyRegular.toLocaleString()}</span>
-                  <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Save ~13%</span>
+                  <span className="text-sm text-gray-400 line-through">₹4,500</span>
+                  <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Save 20%</span>
                 </div>
               </div>
               <p className="mt-2 text-sm text-gray-500">Renews at ₹4,500/month · Limited time offer</p>
@@ -333,7 +332,7 @@ function Pricing() {
               </span>
               <h3 className="text-lg font-bold">Yearly Plan</h3>
               <div className="mt-4 flex items-end gap-1">
-                <span className="text-4xl font-bold tracking-tight">₹{PRICING.yearlyTotal.toLocaleString()}</span>
+                <span className="text-4xl font-bold tracking-tight">₹25,200</span>
                 <span className="mb-1 text-sm text-gray-500">/year</span>
               </div>
               <p className="mt-2 text-sm text-gray-500">Billed yearly</p>
