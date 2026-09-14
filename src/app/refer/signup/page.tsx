@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^\d{10}$/;
-const PASSWORD_RE = /^.{4,}$/;
+const PASSWORD_RE = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
 
 export default function ReferSignupPage() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function ReferSignupPage() {
     if (!fields.name.trim()) newErrors.name = "Name is required.";
     if (!EMAIL_RE.test(fields.email.trim())) newErrors.email = "Valid email is required.";
     if (!PHONE_RE.test(fields.mobile.replace(/\D/g, ''))) newErrors.mobile = "10 digit mobile required.";
-    if (!PASSWORD_RE.test(fields.password)) newErrors.password = "Password must be at least 4 characters.";
+    if (!PASSWORD_RE.test(fields.password)) newErrors.password = "Password must be at least 6 characters (letters & numbers).";
     if (fields.password !== fields.confirmPassword) newErrors.confirmPassword = "Passwords do not match.";
     return newErrors;
   }
@@ -127,7 +127,7 @@ export default function ReferSignupPage() {
                 value={fields.password}
                 onChange={(e) => set("password", e.target.value.replace(/\s/g, ""))}
                 className="w-full pl-4 pr-12 py-3 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-accent font-medium"
-                placeholder="At least 4 characters"
+                placeholder="At least 6 characters (letters & numbers)"
               />
               <button
                 type="button"
