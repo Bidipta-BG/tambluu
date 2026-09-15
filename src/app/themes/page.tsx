@@ -8,9 +8,9 @@ import NavBar from "@/components/NavBar";
 
 const THEMES = [
   { id: "11111111-1111-1111-1111-111111111111", name: "FESTIVAL GLOW", src: "/images/1festivalglow.jpg" },
-  { id: "22222222-2222-2222-2222-222222222222", name: "NORTHEAST ESSENCE", src: "/images/2northeastessence.jpg" },
-  { id: "33333333-3333-3333-3333-333333333333", name: "ROYAL TAMBOLA", src: "/images/3royaltambola.jpg" },
-  { id: "44444444-4444-4444-4444-444444444444", name: "NEON NIGHT", src: "/images/4neonnight.jpg" },
+  // { id: "22222222-2222-2222-2222-222222222222", name: "NORTHEAST ESSENCE", src: "/images/2northeastessence.jpg" },
+  // { id: "33333333-3333-3333-3333-333333333333", name: "ROYAL TAMBOLA", src: "/images/3royaltambola.jpg" },
+  // { id: "44444444-4444-4444-4444-444444444444", name: "NEON NIGHT", src: "/images/4neonnight.jpg" },
   { id: "55555555-5555-5555-5555-555555555555", name: "COLOR SPLASH", src: "/images/5colorsplash.jpg" },
 ];
 
@@ -69,7 +69,7 @@ function ThemesContent() {
                   )}
                 </div>
                 <div className={`p-4 text-center ${isSelected ? 'bg-accent text-white' : 'text-gray-300'}`}>
-                  <p className="font-bold">{theme.name}</p>
+                  {/* <p className="font-bold">{theme.name}</p> */}
                 </div>
               </div>
             );
