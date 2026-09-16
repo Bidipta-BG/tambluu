@@ -274,9 +274,9 @@ function Themes() {
                   className="object-cover" 
                 />
               </div>
-              <div className="bg-gray-50 p-4 text-center">
+              {/* <div className="bg-gray-50 p-4 text-center">
                 <p className="font-bold text-gray-900">{theme.name}</p>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>

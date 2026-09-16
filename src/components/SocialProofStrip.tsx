@@ -33,6 +33,7 @@ export default function SocialProofStrip({ games }: SocialProofStripProps) {
         </div>
 
         {/* Section label */}
+        {/*
         <div className="text-center mb-6">
           <span className="text-xs font-bold tracking-widest text-accent uppercase">
             See It Live
@@ -42,7 +43,6 @@ export default function SocialProofStrip({ games }: SocialProofStripProps) {
           </h3>
         </div>
 
-        {/* Live game cards */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {games.map((game) => (
             <a
@@ -62,7 +62,6 @@ export default function SocialProofStrip({ games }: SocialProofStripProps) {
                 <p className="text-xs text-gray-400 truncate">{game.url}</p>
               </div>
               <div className="flex items-center gap-1.5 shrink-0">
-                {/* Pulsing green dot */}
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
@@ -74,6 +73,7 @@ export default function SocialProofStrip({ games }: SocialProofStripProps) {
             </a>
           ))}
         </div>
+        */}
       </div>
     </section>
   );
