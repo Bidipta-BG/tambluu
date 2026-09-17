@@ -302,3 +302,36 @@ export async function verifyCashfreeOrder(
 
   return response.json() as Promise<VerifyCashfreeOrderResponse>;
 }
+
+// ---------------------------------------------------------------------------
+// Admin Dashboard API
+// ---------------------------------------------------------------------------
+
+export async function getAllAdminTenants() {
+  const apiKey = process.env.NEXT_PUBLIC_INTERNAL_API_KEY;
+  if (!apiKey) throw new Error("NEXT_PUBLIC_INTERNAL_API_KEY is not configured");
+
+  const res = await apiFetch<{ data: any[] }>("/internal/tenants", {
+    method: "GET",
+    headers: {
+      "x-internal-key": apiKey,
+    },
+    // Don't cache admin data
+    cache: "no-store", 
+  });
+  return res.data;
+}
+
+export async function adminUpdateTenant(tenantId: string, updates: any) {
+  const apiKey = process.env.NEXT_PUBLIC_INTERNAL_API_KEY;
+  if (!apiKey) throw new Error("NEXT_PUBLIC_INTERNAL_API_KEY is not configured");
+
+  const res = await apiFetch<{ data: any }>(`/internal/tenants/${tenantId}`, {
+    method: "PATCH",
+    headers: {
+      "x-internal-key": apiKey,
+    },
+    body: JSON.stringify(updates),
+  });
+  return res.data;
+}
