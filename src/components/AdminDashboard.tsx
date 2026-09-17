@@ -7,6 +7,15 @@ interface AdminDashboardProps {
   onLogout: () => void;
 }
 
+// Helper to format ISO string to local YYYY-MM-DDThh:mm for datetime-local inputs
+const toLocalInputFormat = (isoString: string) => {
+  if (!isoString) return "";
+  const d = new Date(isoString);
+  if (isNaN(d.getTime())) return "";
+  const pad = (n: number) => n.toString().padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
+
 export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const [tenants, setTenants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -230,10 +239,14 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                 <label className="block text-white text-xs font-bold mb-1">Start Date</label>
                 <input
                   type="datetime-local"
-                  value={editForm.start_date ? new Date(editForm.start_date).toISOString().slice(0, 16) : ""}
+                  value={toLocalInputFormat(editForm.start_date)}
                   onChange={(e) => {
+                    if (!e.target.value) {
+                      setEditForm({ ...editForm, start_date: "" });
+                      return;
+                    }
                     const dateObj = new Date(e.target.value);
-                    setEditForm({...editForm, start_date: isNaN(dateObj.getTime()) ? "" : dateObj.toISOString()});
+                    setEditForm({ ...editForm, start_date: isNaN(dateObj.getTime()) ? "" : dateObj.toISOString() });
                   }}
                   className="w-full px-3 py-2 rounded bg-white text-black text-sm"
                 />
@@ -243,10 +256,14 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                 <label className="block text-white text-xs font-bold mb-1">Expiry Date</label>
                 <input
                   type="datetime-local"
-                  value={editForm.expiry_date ? new Date(editForm.expiry_date).toISOString().slice(0, 16) : ""}
+                  value={toLocalInputFormat(editForm.expiry_date)}
                   onChange={(e) => {
+                    if (!e.target.value) {
+                      setEditForm({ ...editForm, expiry_date: "" });
+                      return;
+                    }
                     const dateObj = new Date(e.target.value);
-                    setEditForm({...editForm, expiry_date: isNaN(dateObj.getTime()) ? "" : dateObj.toISOString()});
+                    setEditForm({ ...editForm, expiry_date: isNaN(dateObj.getTime()) ? "" : dateObj.toISOString() });
                   }}
                   className="w-full px-3 py-2 rounded bg-white text-black text-sm"
                 />
