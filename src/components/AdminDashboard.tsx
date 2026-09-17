@@ -146,15 +146,23 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                   </td>
                   <td className="px-4 py-3 capitalize">{sub.plan || "N/A"}</td>
                   <td className="px-4 py-3">
-                    {sub.status ? (
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        sub.status === 'active' ? 'bg-green-500/20 text-green-300' :
-                        sub.status === 'expired' ? 'bg-red-500/20 text-red-300' :
-                        'bg-yellow-500/20 text-yellow-300'
-                      }`}>
-                        {sub.status}
-                      </span>
-                    ) : "N/A"}
+                    <div className="flex flex-col gap-1 items-start">
+                      {sub.is_paid ? (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-green-500 text-white uppercase tracking-wider">Paid</span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-500 text-white uppercase tracking-wider">Unpaid</span>
+                      )}
+                      
+                      {sub.status ? (
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${
+                          sub.status === 'active' ? 'bg-green-500/20 text-green-300' :
+                          sub.status === 'expired' ? 'bg-red-500/20 text-red-300' :
+                          'bg-yellow-500/20 text-yellow-300'
+                        }`}>
+                          {sub.status}
+                        </span>
+                      ) : <span className="text-xs">N/A</span>}
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-xs whitespace-nowrap">
                     <div>Start: {sub.start_date ? new Date(sub.start_date).toLocaleDateString() : "N/A"}</div>

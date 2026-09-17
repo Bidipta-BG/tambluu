@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { markTenantAsPaid } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "You're in! — GetTambola",
@@ -204,6 +205,14 @@ export default async function ConfirmationPage({
   const { isPaid, cfPaymentId } = order_id
     ? await verifyPayment(order_id)
     : { isPaid: false, cfPaymentId: null };
+
+  if (isPaid) {
+    try {
+      await markTenantAsPaid(tenantId);
+    } catch (err) {
+      console.error("Failed to mark tenant as paid in DB:", err);
+    }
+  }
 
   // Mask all but the last 4 digits of the phone number for display.
   // e.g. "9876543210" → "••••••3210"

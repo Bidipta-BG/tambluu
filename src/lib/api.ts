@@ -335,3 +335,16 @@ export async function adminUpdateTenant(tenantId: string, updates: any) {
   });
   return res.data;
 }
+
+export async function markTenantAsPaid(tenantId: string) {
+  const apiKey = process.env.NEXT_PUBLIC_INTERNAL_API_KEY;
+  if (!apiKey) throw new Error("NEXT_PUBLIC_INTERNAL_API_KEY is not configured");
+
+  const res = await apiFetch<{ data: any }>(`/internal/tenants/${tenantId}/mark-paid`, {
+    method: "POST",
+    headers: {
+      "x-internal-key": apiKey,
+    },
+  });
+  return res.data;
+}
